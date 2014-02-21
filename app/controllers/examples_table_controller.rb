@@ -37,6 +37,10 @@ class ExampleTableController < UITableViewController
       {
         title: "Snap",
         controller: SnapViewController
+      },
+      {
+        title: "Item Properties",
+        controller: ItemPropertiesViewController
       }
     ]
   end
