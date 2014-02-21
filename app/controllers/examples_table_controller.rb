@@ -33,6 +33,10 @@ class ExampleTableController < UITableViewController
       {
         title: "Collision",
         controller: CollisionViewController
+      },
+      {
+        title: "Snap",
+        controller: SnapViewController
       }
     ]
   end
