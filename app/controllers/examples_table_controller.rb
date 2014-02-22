@@ -1,4 +1,4 @@
-class ExampleTableController < UITableViewController
+class ExamplesTableController < UITableViewController
   def viewDidLoad
     super
     self.title = "UIKit Examples"

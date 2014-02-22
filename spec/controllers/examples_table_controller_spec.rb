@@ -1,6 +1,6 @@
-describe ExampleTableController do
+describe ExamplesTableController do
   before do
-    @subject = ExampleTableController.new
+    @subject = ExamplesTableController.new
   end
 
   describe "#viewDidLoad" do

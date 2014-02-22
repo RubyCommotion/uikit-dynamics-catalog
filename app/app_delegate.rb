@@ -1,6 +1,6 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    table_controller = ExampleTableController.alloc.init
+    table_controller = ExamplesTableController.alloc.init
     nav_controller = UINavigationController.alloc.initWithRootViewController(table_controller)
 
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
