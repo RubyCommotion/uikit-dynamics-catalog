@@ -16,4 +16,9 @@ class BaseViewController < UIViewController
   def animator
     @animator ||= UIDynamicAnimator.alloc.initWithReferenceView(view)
   end
+
+  def collision_behavior
+    @collision_behavior ||= UICollisionBehavior.alloc.initWithItems([self.box])
+  end
+
 end
