@@ -41,6 +41,10 @@ class ExamplesTableController < UITableViewController
       {
         title: "Item Properties",
         controller: ItemPropertiesViewController
+      },
+      {
+        title: "Pendulum (Composite Behavior)",
+        controller: PendulumViewController
       }
     ]
   end
