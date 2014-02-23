@@ -8,7 +8,7 @@ class PendulumViewController < BaseViewController
   def viewDidLoad
     super
 
-    self.box = new_box(100, 300)
+    self.box = new_box(100, 270)
     self.view.addSubview(box)
 
     image = UIImage.imageNamed("attachment_point")
@@ -34,6 +34,9 @@ class PendulumViewController < BaseViewController
     self.pendulumBehavior = pendulumBehavior
 
     self.animator = animator
+
+    gesture = UIPanGestureRecognizer.alloc.initWithTarget(self, action: "dragWeight:")
+    self.view.addGestureRecognizer(gesture)
   end
 
   def dragWeight(gesture)
@@ -43,10 +46,10 @@ class PendulumViewController < BaseViewController
     elsif (gesture.state == UIGestureRecognizerStateEnded)
       self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
     elsif (gesture.state == UIGestureRecognizerStateCancelled)
-      gesture.enabled = YES
+      gesture.enabled = true
       self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
     elsif (!CGRectContainsPoint(self.box.bounds, gesture.locationInView(self.box)))
-      gesture.enabled = NO
+      gesture.enabled = false
     else
       self.pendulumBehavior.dragWeightToPoint(gesture.locationInView(self.view))
     end
