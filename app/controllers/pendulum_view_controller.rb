@@ -21,7 +21,6 @@ class PendulumViewController < BaseViewController
     self.attachmentPoint.image = self.attachmentPoint.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
 
     # Visually show the connection between the attachmentPoint and the box. 
-
     self.view.trackAndDrawAttachmentFromView(self.attachmentPoint,toView:self.box,withAttachmentOffset:CGPointMake(0, -0.95 * self.box.bounds.size.height/2))
 
     animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
@@ -40,15 +39,16 @@ class PendulumViewController < BaseViewController
   end
 
   def dragWeight(gesture)
-    #TODO: replace this with a case
-    if (gesture.state == UIGestureRecognizerStateBegan) 
+
+    case gesture.state
+    when UIGestureRecognizerStateBegan
       self.pendulumBehavior.beginDraggingWeightAtPoint(gesture.locationInView(self.view))
-    elsif (gesture.state == UIGestureRecognizerStateEnded)
+    when UIGestureRecognizerStateEnded
       self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
-    elsif (gesture.state == UIGestureRecognizerStateCancelled)
+    when UIGestureRecognizerStateCancelled
       gesture.enabled = true
       self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
-    elsif (!CGRectContainsPoint(self.box.bounds, gesture.locationInView(self.box)))
+    when -> (state)  { (!CGRectContainsPoint(self.box.bounds, gesture.locationInView(self.box))) }
       gesture.enabled = false
     else
       self.pendulumBehavior.dragWeightToPoint(gesture.locationInView(self.view))
