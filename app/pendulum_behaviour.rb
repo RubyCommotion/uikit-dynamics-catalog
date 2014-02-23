@@ -2,30 +2,29 @@ class PendulumBehaviour < UIDynamicBehavior
   attr_accessor :draggingBehavior, :pushBehavior
 
   def initWithWeight(item, suspendedFromPoint:p)
-    #super.init
+    init
     #self = [super init];
-        # The high-level pendulum behavior is built from 2 primitive behaviors.
+    # The high-level pendulum behavior is built from 2 primitive behaviors.
 
-        gravityBehavior = UIGravityBehavior.alloc.initWithItems([item])
-        attachmentBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:p)
+    gravityBehavior = UIGravityBehavior.alloc.initWithItems([item])
+    attachmentBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:p)
 
-        # These primative behaviors allow the user to drag the pendulum weight.
-        draggingBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:CGPointZero)
-        pushBehavior = UIPushBehavior.alloc.initWithItems([item], mode:UIPushBehaviorModeInstantaneous)
+    # These primative behaviors allow the user to drag the pendulum weight.
+    draggingBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:CGPointZero)
+    pushBehavior = UIPushBehavior.alloc.initWithItems([item], mode:UIPushBehaviorModeInstantaneous)
 
-        pushBehavior.active = false
+    pushBehavior.active = false
 
-        self.addChildBehavior(gravityBehavior)
-        self.addChildBehavior(attachmentBehavior)
+    self.addChildBehavior(gravityBehavior)
+    self.addChildBehavior(attachmentBehavior)
 
-        self.addChildBehavior(pushBehavior)
-        # The draggingBehavior is added as needed, when the user begins dragging the weight.
+    self.addChildBehavior(pushBehavior)
+    # The draggingBehavior is added as needed, when the user begins dragging the weight.
 
-        self.draggingBehavior = draggingBehavior
-        self.pushBehavior = pushBehavior
-        return self
+    self.draggingBehavior = draggingBehavior
+    self.pushBehavior = pushBehavior
+    return self
   end
-
 
   def beginDraggingWeightAtPoint(p)
     self.draggingBehavior.anchorPoint = p
@@ -40,7 +39,7 @@ class PendulumBehaviour < UIDynamicBehavior
 
   def endDraggingWeightWithVelocity(v)
     magnitude = Math.sqrt(((v.x)**2.0)+((v.y)**2.0))
-    angle = atan2(v.y, v.x)
+    angle = Math.atan2(v.y, v.x)
 
     # Reduce the volocity to something meaningful.  (Prevents the user from flinging the pendulum weight).
     magnitude /= 500
