@@ -18,7 +18,7 @@ class PendulumBehaviour < UIDynamicBehavior
 
     self.draggingBehavior = draggingBehavior
     self.pushBehavior = pushBehavior
-    return self
+    self
   end
 
   def beginDraggingWeightAtPoint(p)
@@ -42,6 +42,4 @@ class PendulumBehaviour < UIDynamicBehavior
 
     self.removeChildBehavior(self.draggingBehavior)
   end
-
 end
-
