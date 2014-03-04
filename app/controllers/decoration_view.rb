@@ -1,23 +1,11 @@
 class DecorationView < UIView
 
-  #@interface APLDecorationView ()
-  #@property (nonatomic, strong) UIView *attachmentPointView;
-  #@property (nonatomic, strong) UIView *attachedView;
-  #@property (nonatomic, readwrite) CGPoint attachmentOffset;
-  ##! Array of CALayer objects, each with the contents of an image
-  ##! for a dash.
-  #@property (nonatomic, strong) NSMutableArray *attachmentDecorationLayers;
-  #@property (nonatomic, weak) IBOutlet UIImageView *centerPointView;
-  #@property (nonatomic, weak) UIImageView *arrowView;
-  #@end
-
-  attr_accessor :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :arrow_view
+  attr_accessor :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
 
 
   def initWithCoder(aDecoder)
     super
     if (self)
-      @attachment_decoration_layers = []
       self.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('BackgroundTile'))
     end
     self
@@ -30,11 +18,8 @@ class DecorationView < UIView
   end
 
 
-  #  Draws an arrow with a given @a length anchored at the center of the receiver,
-  #  that points in the direction given by @a angle.
-  #
   def drawMagnitudeVectorWithLength(length, angle:angle, color:arrowColor, forLimitedTime:temporary)
-    unless self.arrow_view
+    unless @arrow_view
       # First time initialization.
 
       arrowImage = UIImage.imageNamed('Arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
@@ -50,38 +35,35 @@ class DecorationView < UIView
       self.arrow_view = arrowImageView
     end
 
-    self.arrow_view.bounds = CGRectMake(0, 0, length, self.arrow_view.bounds.size.height)
-    self.arrow_view.transform = CGAffineTransformMakeRotation(angle)
-    self.arrow_view.tintColor = arrowColor
-    self.arrow_view.alpha = 1
+    arrow_view.bounds = CGRectMake(0, 0, length, self.arrow_view.bounds.size.height)
+    arrow_view.transform = CGAffineTransformMakeRotation(angle)
+    arrow_view.tintColor = arrowColor
+    arrow_view.alpha = 1
 
     if (temporary)
-      # TODO check this syntax for lambda
-      UIView.animateWithDuration(1.0, animations: ->{ self.arrow_view.alpha = 0 })
+      UIView.animateWithDuration(1.0, animations: ->{ arrow_view.alpha = 0 })
     end
   end
 
-  # Draws a dashed line between @a attachment_point_view and @a attached_view
-  # that is updated as either view moves.
-  #
+
   def trackAndDrawAttachmentFromView(attachment_point_view, toView: attached_view, withAttachmentOffset: attachment_offset)
 
-    unless self.attachment_decoration_layers
-      # First time initialization.
-      #self.attachment_decoration_layers = [NSMutableArray arrayWithCapacity:4]
+     unless @attachment_decoration_layers
 
-      (0..4).each do |i|
-        #for (NSUInteger i=0; i<4; i++)
-        dashImage = UIImage.imageNamed(NSString.stringWithFormat("DashStyle#{(i % 3) + 1}"))
+      unless attachment_decoration_layers
+        self.attachment_decoration_layers = []
+      end
 
-        dashLayer = CALayer.layer
-        dashLayer.contents = dashImage.CGImage
-        #dashLayer.contents = (__bridge id)(dashImage.CGImage)
-        dashLayer.bounds = CGRectMake(0, 0, dashImage.size.width, dashImage.size.height)
-        dashLayer.anchorPoint = CGPointMake(0.5, 0)
+      for i in 0..3
+        dash_image = UIImage.imageNamed("dash#{(i % 3) + 1}")
 
-        self.layer.insertSublayer(dashLayer, atIndex: 0)
-        self.attachment_decoration_layers.addObject(dashLayer)
+        dash_layer = CALayer.layer
+        dash_layer.contents = dash_image.CGImage
+        dash_layer.bounds = CGRectMake(0, 0, dash_image.size.width, dash_image.size.height)
+        dash_layer.anchorPoint = CGPointMake(0.5, 0)
+
+        self.layer.insertSublayer(dash_layer, atIndex: 0)
+        attachment_decoration_layers << dash_layer
       end
     end
 
@@ -92,17 +74,16 @@ class DecorationView < UIView
       # rest.  You should therefore strive to make your callback code as
       # efficient as possible.
 
-      self.attachment_point_view.removeObserver(self, forKeyPath: 'center')
-      self.attached_view.removeObserver(self, forKeyPath: 'center')
+      #attachment_point_view.removeObserver(self, forKeyPath: 'center')
+      #attached_view.removeObserver(self, forKeyPath: 'center')
 
       self.attachment_point_view = attachment_point_view
       self.attached_view = attached_view
       self.attachment_offset = attachment_offset
 
       # Observe the 'center' property of both views to know when they move.
-      self.attachment_point_view.addObserver(self, forKeyPath: 'center', options:0, context: nil)
-      self.attached_view.addObserver(self, forKeyPath: 'center', options: 0, context: nil)
-
+      attachment_point_view.addObserver(self, forKeyPath: 'center', options:0, context: nil)
+      attached_view.addObserver(self, forKeyPath: 'center', options: 0, context: nil)
       self.setNeedsLayout
   end
 
@@ -111,17 +92,14 @@ class DecorationView < UIView
 
     super
 
-    self.arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+    # TODO use self.arrow_view.center conditionally based on which VC uses this view
+    #self.arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
 
-    if self.center_point_view
-      self.center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+    if @center_point_view
+      center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
     end
 
-    if (self.attachment_decoration_layers)
-
-      # Here we adjust the line dash pattern visualizing the attachement
-      # between attachment_point_view and attached_view to account for a change
-      # in the position of either.
+    if @attachment_decoration_layers
 
       max_dashes = self.attachment_decoration_layers.count
 
@@ -130,10 +108,10 @@ class DecorationView < UIView
       attached_view_attachment_point = CGPointMake(self.attached_view.bounds.size.width/2 + self.attachment_offset.x, self.attached_view.bounds.size.height/2 + self.attachment_offset.y)
       attached_view_attachment_point =  self.attached_view.convertPoint(attached_view_attachment_point, toView: self)
 
-      distance = sqrtf( powf(attached_view_attachment_point.x-attachment_point_view_center.x, 2.0) +
-                             powf(attached_view_attachment_point.y-attachment_point_view_center.y, 2.0) )
+      distance = Math.sqrt( ((attached_view_attachment_point.x-attachment_point_view_center.x) ** 2.0) +
+                             ((attached_view_attachment_point.y-attachment_point_view_center.y) ** 2.0) )
 
-      angle = atan2( attached_view_attachment_point.y-attachment_point_view_center.y,
+      angle = Math.atan2( attached_view_attachment_point.y-attachment_point_view_center.y,
                      attached_view_attachment_point.x-attachment_point_view_center.x )
 
       required_dashes = 0

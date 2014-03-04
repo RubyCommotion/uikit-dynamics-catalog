@@ -6,6 +6,7 @@ class BaseViewController < UIViewController
     self.view.backgroundColor = UIColor.whiteColor
   end
 
+  # Pass in the desired location for the box. This may be different for each view.
   def new_box(x, y)
     image = UIImage.imageNamed("box1")
     image_view = UIImageView.alloc.initWithFrame([[x, y], [image.size.height, image.size.width]])
@@ -16,9 +17,4 @@ class BaseViewController < UIViewController
   def animator
     @animator ||= UIDynamicAnimator.alloc.initWithReferenceView(view)
   end
-
-  def collision_behavior
-    @collision_behavior ||= UICollisionBehavior.alloc.initWithItems([self.box])
-  end
-
 end

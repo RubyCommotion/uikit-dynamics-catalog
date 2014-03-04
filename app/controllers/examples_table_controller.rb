@@ -27,6 +27,10 @@ class ExampleTableController < UITableViewController
   def data
     [
       {
+        title: "Attachments + Collision",
+        controller: AttachmentsView
+      },
+      {
         title: "Gravity",
         controller: GravityViewController
       },
