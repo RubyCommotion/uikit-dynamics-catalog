@@ -43,6 +43,10 @@ class ExamplesTableController < UITableViewController
         controller: SnapViewController
       },
       {
+        title: 'Instantaneous Push + Collision',
+        controller: InstantaneousPushViewController
+      },
+      {
         title: "Item Properties",
         controller: ItemPropertiesViewController
       },
