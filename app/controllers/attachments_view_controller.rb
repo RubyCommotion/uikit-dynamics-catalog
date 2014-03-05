@@ -1,12 +1,9 @@
 class AttachmentsView < BaseViewController
-
   attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :square1_attachment_view, :attachment_view
-
 
   def loadView
     self.view = DecorationView.alloc.init
   end
-
 
   def viewDidLoad
     super
@@ -17,8 +14,7 @@ class AttachmentsView < BaseViewController
 
     attachment_view.center = attachment_behavior.anchorPoint
     self.view.trackAndDrawAttachmentFromView(attachment_view, toView: square1, withAttachmentOffset: CGPointMake(-25.0, -25.0))
-    end
-
+  end
 
   private
 
@@ -37,10 +33,9 @@ class AttachmentsView < BaseViewController
     self.view.addGestureRecognizer(pan_gesture_recognizer)
   end
 
-
   def create_animator_and_behaviors
     self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
-  self.collision_behavior = UICollisionBehavior.alloc.initWithItems([square1])
+    self.collision_behavior = UICollisionBehavior.alloc.initWithItems([square1])
     collision_behavior.translatesReferenceBoundsIntoBoundary = true
     animator.addBehavior(collision_behavior)
 
@@ -51,12 +46,10 @@ class AttachmentsView < BaseViewController
 
   end
 
-
   def handle_attachment_gesture(gesture)
-      attachment_behavior.setAnchorPoint(gesture.locationInView(self.view))
-      attachment_view.center = self.attachment_behavior.anchorPoint
+    attachment_behavior.setAnchorPoint(gesture.locationInView(self.view))
+    attachment_view.center = self.attachment_behavior.anchorPoint
   end
-
 
   def create_square1_view
     @square1 ||= UIView.alloc.initWithFrame([[110, 135], [100, 100]]).tap do |sq1|
@@ -73,7 +66,6 @@ class AttachmentsView < BaseViewController
     end
   end
 
-
   def create_instructions_label
     @label ||= UILabel.alloc.initWithFrame([[20, 504], [280, 44]]).tap do |lbl|
       lbl.enabled = false
@@ -86,14 +78,12 @@ class AttachmentsView < BaseViewController
     end
   end
 
-
   def create_attachment_view
     attachment_point_mask_image = UIImage.imageNamed('attachment_point_mask')
     @attachment_view ||=  UIImageView.alloc.initWithFrame([[12, 76], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]]).tap do |att_vw|
-    att_vw.image = attachment_point_mask_image
-    att_vw.tintColor = UIColor.redColor
-    att_vw.image = att_vw.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+      att_vw.image = attachment_point_mask_image
+      att_vw.tintColor = UIColor.redColor
+      att_vw.image = att_vw.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
     end
   end
-
 end
