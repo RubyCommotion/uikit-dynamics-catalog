@@ -10,6 +10,7 @@ class InstantaneousPushViewController  < BaseViewController
 
   def viewDidLoad
     super
+    create_gesture_recognizer
     create_square1_view
     create_origin_view
     create_instructions_label
@@ -26,7 +27,7 @@ class InstantaneousPushViewController  < BaseViewController
     collisionBehavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(UIEdgeInsetsMake(self.topLayoutGuide.length, 0, self.bottomLayoutGuide.length, 0))
     animator.addBehavior(collisionBehavior)
 
-    push_behavior = UIPushBehavior.alloc.initWithItems([square1], mode:UIPushBehaviorModeInstantaneous)
+    self.push_behavior = UIPushBehavior.alloc.initWithItems([square1], mode:UIPushBehaviorModeInstantaneous)
     push_behavior.angle = 0.0
     push_behavior.magnitude = 0.0
     animator.addBehavior(push_behavior)
@@ -35,33 +36,39 @@ class InstantaneousPushViewController  < BaseViewController
   end
 
 
-  #  IBAction for the Tap Gesture Recognizer that has been configured to track
-  #  touches in self.view.
-  #def handlePushGesture:(UITapGestureRecognizer*)gesture
-  #{
-  #    # Tapping will change the angle and magnitude of the impulse. To visually
-  #    # show the impulse vector on screen, a red arrow representing the angle
-  #    # and magnitude of this vector is briefly drawn.
-  #    CGPoint p = [gesture locationInView:self.view]
-  #    CGPoint o = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
-  #    CGFloat distance = sqrtf(powf(p.x-o.x, 2.0)+powf(p.y-o.y, 2.0))
-  #    CGFloat angle = atan2(p.y-o.y, p.x-o.x)
-  #    distance = MIN(distance, 100.0)
-  #
-  #    # Display an arrow showing the direction and magnitude of the applied
-  #    # impulse.
-  #    [(APLDecorationView*)self.view drawMagnitudeVectorWithLength:distance angle:angle color:[UIColor redColor] forLimitedTime:true]
-  #
-  #    # These two lines change the actual force vector.
-  #    [self.push_behavior setMagnitude:distance / 100.0]
-  #    [self.push_behavior setAngle:angle]
-  #    # A push behavior in instantaneous (impulse) mode automatically
-  #    # deactivate itself after applying the impulse. We thus need to reactivate
-  #    # it when changing the impulse vector.
-  #    [self.push_behavior setActive:TRUE]
-  #end
+  def handle_push_gesture(gesture)
+      # Tapping will change the angle and magnitude of the impulse. To visually
+      # show the impulse vector on screen, a red arrow representing the angle
+      # and magnitude of this vector is briefly drawn.
+      p = gesture.locationInView(self.view)
+      o = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
+      distance = Math.sqrt(((p.x - o.x) ** 2.0) + ((p.y - o.y) ** 2.0))
+      angle = Math.atan2(p.y-o.y, p.x-o.x)
+      distance = [distance, 100.0].min
+
+      # Display an arrow showing the direction and magnitude of the applied
+      # impulse.
+      self.view.drawMagnitudeVectorWithLength(distance, angle:angle, color: UIColor.redColor, forLimitedTime: true)
+
+      # These two lines change the actual force vector.
+      push_behavior.setMagnitude(distance / 100.0)
+      push_behavior.setAngle(angle)
+      # A push behavior in instantaneous (impulse) mode automatically
+      # deactivate itself after applying the impulse. We thus need to reactivate
+      # it when changing the impulse vector.
+      push_behavior.setActive(true)
+  end
 
   private
+
+  def create_gesture_recognizer
+    pan_gesture_recognizer = UIPanGestureRecognizer.alloc.initWithTarget(self, action: 'handle_push_gesture:')
+    tap_gesture_recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action: 'handle_push_gesture:')
+    self.view.addGestureRecognizer(pan_gesture_recognizer)
+    self.view.addGestureRecognizer(tap_gesture_recognizer)
+  end
+
+
 
   def create_square1_view
     @square1 ||= UIView.alloc.initWithFrame([[110, 98], [100, 100]]).tap do |sq1_view|

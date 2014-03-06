@@ -27,7 +27,7 @@ class ExamplesTableController < UITableViewController
   def data
     [
       {
-        title: "Attachments + Collision",
+        title: 'Attachments + Collision',
         controller: AttachmentsView
       },
       {
@@ -35,11 +35,11 @@ class ExamplesTableController < UITableViewController
         controller: GravityViewController
       },
       {
-        title: "Collision",
+        title: 'Gravity + Collision',
         controller: CollisionViewController
       },
       {
-        title: "Snap",
+        title: 'Snap',
         controller: SnapViewController
       },
       {
@@ -47,11 +47,11 @@ class ExamplesTableController < UITableViewController
         controller: InstantaneousPushViewController
       },
       {
-        title: "Item Properties",
+        title: 'Item Properties',
         controller: ItemPropertiesViewController
       },
       {
-        title: "Pendulum (Composite Behavior)",
+        title: 'Pendulum (Composite Behavior)',
         controller: PendulumViewController
       }
     ]
