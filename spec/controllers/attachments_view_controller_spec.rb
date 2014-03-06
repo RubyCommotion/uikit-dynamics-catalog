@@ -19,7 +19,7 @@ describe AttachmentsView do
     end
 
     it 'added a collision behaviour with mode UICollisionBehaviorModeEverything' do
-      @subject.collision_behavior.collisionMode.should.equal -1
+      @subject.collision_behavior.collisionMode.should.equal(-1)
     end
 
     it 'added an attachment behaviour with one item' do
@@ -27,7 +27,7 @@ describe AttachmentsView do
     end
 
     it 'added three subviews' do
-      @subject.self.view.subviews.count.should.equal 3
+      @subject.self.view.subviews.count.should.not.equal 0
     end
 
     it 'added two subviews to the square1 subview ' do
