@@ -26,8 +26,7 @@ class ExamplesTableController < UITableViewController
 
   def data
     [
-      {
-        title: 'Attachments + Collision',
+      {title: 'Attachments + Collision',
         controller: AttachmentsView
       },
       {
