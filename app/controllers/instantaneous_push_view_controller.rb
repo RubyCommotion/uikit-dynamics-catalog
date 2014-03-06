@@ -31,8 +31,6 @@ class InstantaneousPushViewController  < BaseViewController
     push_behavior.angle = 0.0
     push_behavior.magnitude = 0.0
     animator.addBehavior(push_behavior)
-    #self.push_behavior = push_behavior
-    #self.animator = animator
   end
 
 
