@@ -1,6 +1,17 @@
 class DecorationView < UIView
 
-  attr_accessor :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
+  attr_accessor :arrow_view, :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
+
+
+  def init
+    super
+    if self
+      create_arrow_view
+      self
+    else
+      nil
+    end
+  end
 
 
   def initWithCoder(aDecoder)
@@ -13,28 +24,15 @@ class DecorationView < UIView
 
 
   def dealloc
-    self.attachment_point_view.removeObserver(self, forKeyPath: 'center')
-    self.attached_view.removeObserver(self, forKeyPath: 'center')
+    if attachment_point_view && attached_view
+      self.attachment_point_view.removeObserver(self, forKeyPath: 'center')
+      self.attached_view.removeObserver(self, forKeyPath: 'center')
+    end
+
   end
 
 
   def drawMagnitudeVectorWithLength(length, angle:angle, color:arrowColor, forLimitedTime:temporary)
-    unless @arrow_view
-      # First time initialization.
-
-      arrowImage = UIImage.imageNamed('Arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-
-      arrowImageView = UIImageView.alloc.initWithImage(arrowImage)
-      arrowImageView.bounds = CGRectMake(0, 0, arrowImage.size.width, arrowImage.size.height)
-      arrowImageView.contentMode = UIViewContentModeRight
-      arrowImageView.clipsToBounds = true
-      arrowImageView.layer.anchorPoint = CGPointMake(0.0, 0.5)
-
-      self.addSubview(arrowImageView)
-      self.sendSubviewToBack(arrowImageView)
-      self.arrow_view = arrowImageView
-    end
-
     arrow_view.bounds = CGRectMake(0, 0, length, self.arrow_view.bounds.size.height)
     arrow_view.transform = CGAffineTransformMakeRotation(angle)
     arrow_view.tintColor = arrowColor
@@ -93,7 +91,7 @@ class DecorationView < UIView
     super
 
     # TODO use self.arrow_view.center conditionally based on which VC uses this view
-    #self.arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+    arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
 
     if @center_point_view
       center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
@@ -182,6 +180,28 @@ class DecorationView < UIView
     else
       super
     end
+  end
+
+  private
+
+  def create_arrow_view
+
+    unless @arrow_view
+      # First time initialization.
+
+      arrow_image = UIImage.imageNamed('arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+
+      self.arrow_view = UIImageView.alloc.initWithImage(arrow_image)
+      arrow_view.bounds = CGRectMake(0, 0, arrow_image.size.width, arrow_image.size.height)
+      arrow_view.contentMode = UIViewContentModeRight
+      arrow_view.clipsToBounds = true
+      arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
+      arrow_view.alpha = 0
+
+      self.addSubview(arrow_view)
+      #self.sendSubviewToBack(arrow_view)
+    end
+
   end
 
 end

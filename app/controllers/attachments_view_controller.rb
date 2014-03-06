@@ -73,7 +73,7 @@ class AttachmentsView < BaseViewController
       lbl.clipsToBounds = true
       lbl.text = 'Drag anywhere to move the square.'
       lbl.adjustsFontSizeToFitWidth = true
-      lbl.textColor = UIColor.darkTextColor
+      #lbl.textColor = UIColor.darkTextColor
       lbl.font = UIFont.fontWithName('Chalkduster', size:15)
     end
   end
