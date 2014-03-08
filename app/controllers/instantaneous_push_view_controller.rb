@@ -74,13 +74,6 @@ class InstantaneousPushViewController  < BaseViewController
       box1_view = new_box(0,0)
       sq1_view.addSubview(box1_view)
       self.view.addSubview(sq1_view)
-      #attachment_point_mask_image = UIImage.imageNamed('attachment_point_mask')
-      #self.square1_attachment_view = UIImageView.alloc.initWithFrame([[44, 44], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]])
-      #square1_attachment_view.image = attachment_point_mask_image
-      #square1_attachment_view.center = CGPointMake(25.0, 25.0)
-      #square1_attachment_view.tintColor = UIColor.blueColor
-      #square1_attachment_view.image = square1_attachment_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-      #sq1_view.addSubview(square1_attachment_view)
     end
 
 
@@ -88,9 +81,6 @@ class InstantaneousPushViewController  < BaseViewController
       origin_image = UIImage.imageNamed('origin')
       origin_view = UIImageView.alloc.initWithFrame([[155, 235], [10, 10]])
       origin_view.image = origin_image
-      #square1_attachment_view.center = CGPointMake(25.0, 25.0)
-      #square1_attachment_view.tintColor = UIColor.blueColor
-      #square1_attachment_view.image = square1_attachment_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
       self.view.addSubview(origin_view)
     end
 
@@ -101,7 +91,6 @@ class InstantaneousPushViewController  < BaseViewController
         lbl.clipsToBounds = true
         lbl.text = 'Tap anywhere to create a force.'
         lbl.adjustsFontSizeToFitWidth = true
-        #lbl.textColor = UIColor.darkTextColor
         lbl.font = UIFont.fontWithName('Chalkduster', size:15)
       end
       self.view.addSubview(label)

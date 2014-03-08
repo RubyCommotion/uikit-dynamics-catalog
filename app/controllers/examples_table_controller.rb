@@ -42,6 +42,10 @@ class ExamplesTableController < UITableViewController
         controller: SnapViewController
       },
       {
+        title: 'Continuous Push + Collision',
+        controller: ContinuousPushViewController
+      },
+      {
         title: 'Instantaneous Push + Collision',
         controller: InstantaneousPushViewController
       },
