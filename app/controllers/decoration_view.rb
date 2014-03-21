@@ -7,17 +7,16 @@ class DecorationView < UIView
     if self
       create_arrow_view
       @attachment_decoration_layers = create_attachment_decoration_layers
-      self
     else
-      nil
+      return nil
     end
+    self
   end
 
 
   def initWithCoder(aDecoder)
     super
     if (self)
-      self.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('BackgroundTile'))
     end
     self
   end

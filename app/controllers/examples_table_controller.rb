@@ -29,6 +29,9 @@ class ExamplesTableController < UITableViewController
       {title: 'Attachments + Collision',
         controller: AttachmentsView
       },
+      {title: 'Custom Dynamic Item',
+        controller: CustomDynamicItemViewController
+      },
       {
         title: "Gravity",
         controller: GravityViewController
