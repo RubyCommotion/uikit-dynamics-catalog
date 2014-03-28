@@ -1,16 +1,10 @@
 class PositionToBoundsMapping < NSObject
 
-attr_accessor :target, :bounds, :center, :transform
+attr_accessor :target
 
 def initWithTarget(target)
   init
-  if self
-    @target = target
-    @bounds = target.bounds
-    puts "PtoB init target class and bounds: #{target.class} #{target.bounds.origin.x} #{target.bounds.origin.y} #{target.bounds.size.width} #{target.bounds.size.height}"
-  else
-    nil
-  end
+  self.target = target
   self
 end
 
@@ -19,27 +13,32 @@ end
 #  UIDynamicItem.
   def bounds
     # Pass through
-    puts "PtoB bounds def bounds: #{self.target.bounds.origin.x} #{self.target.bounds.origin.y} #{self.target.bounds.size.width} #{self.target.bounds.size.height}"
-    self.target.bounds
+    target.bounds
+  end
+
+
+# The Obj-C version of PositionToBoundsMapping had set Bounds implemented implicitly via a property directive bounds
+# RM has to have the setBounds setter implemented manually as described in this RM support ticket.
+# https://hipbyte.freshdesk.com/support/tickets/1693
+
+  def setBounds
+    true
   end
 
 
 #  Manual implementation of the getter for the center property required by
 #  UIDynamicItem.
   def center
-    #center.x <- bounds.size.width, center.y <- bounds.size.height
-    puts "PtoB def center: #{self.target.bounds.size.width} #{self.target.bounds.size.height}"
     CGPointMake(self.target.bounds.size.width, self.target.bounds.size.height)
   end
 
 
 #  Manual implementation of the setter for the center property required by
 #  UIDynamicItem.
-  def center=(center)
+  def setCenter(center)
     # center.x -> bounds.size.width, center.y -> bounds.size.height
     self.target.bounds = CGRectMake(0, 0, center.x, center.y)
   end
-
 
 
 #  Manual implementation of the getter for the transform property required by
@@ -52,10 +51,8 @@ end
 
 #  Manual implementation of the setter for the transform property required by
 #  UIDynamicItem.
-  def transform=(transform)
+  def setTransform(transform)
     # Pass through
     self.target.transform = transform
   end
-
-
 end
