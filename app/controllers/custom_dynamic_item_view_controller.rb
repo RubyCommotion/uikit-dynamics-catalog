@@ -21,9 +21,7 @@ class CustomDynamicItemViewController < BaseViewController
     # Force the button image to scale with its bounds.
     button1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill
     button1.contentVerticalAlignment = UIControlContentVerticalAlignmentFill
-    #button1.contentVerticalAlignment = UIControlContentHorizontalAlignmentFill
-end
-
+  end
 
 
   def button_action(sender)
@@ -39,8 +37,6 @@ end
     # Similarly, as dynamics modifies the center.y, the changes are forwarded
     # to bounds.size.height.
     button_bounds_dynamic_item = PositionToBoundsMapping.alloc.initWithTarget(sender)
-    puts "button_bounds_dynamic_item class: #{button_bounds_dynamic_item.class}"
-    puts "button_bounds_dynamic_item superclass: #{button_bounds_dynamic_item.superclass}"
 
     # Create an attachment between the button_bounds_dynamic_item and the initial
     # value of the button's bounds.
@@ -70,7 +66,5 @@ end
                           action: 'button_action:',
                           forControlEvents: UIControlEventTouchUpInside )
       end
-
   end
-
 end
