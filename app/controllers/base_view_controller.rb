@@ -3,7 +3,7 @@ class BaseViewController < UIViewController
 
   def viewDidLoad
     super
-    self.view.backgroundColor = UIColor.whiteColor
+    self.view.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('background_tile.png'))
   end
 
   # Pass in the desired location for the box. This may be different for each view.
