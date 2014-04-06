@@ -1,22 +1,19 @@
 describe GravityViewController do
-  before do
-    @subject = GravityViewController.new
-  end
 
-  describe "#viewDidLoad" do
-    it "adds a box to the subview" do
-      @subject.view.subviews.count.should.equal 1
+  tests GravityViewController
+
+  describe '#viewDidLoad' do
+    it 'created an ImageView subview: box' do
+      controller.box.class.should.equal UIImageView
     end
   end
 
-  describe "#viewDidAppear" do
-    before do
-      @subject.viewDidLoad
-      @subject.viewDidAppear(false)
+  describe '#viewDidAppear' do
+    it 'adds a behaviour to the animator' do
+      controller.animator.behaviors.count.should.equal 1
     end
-
-    it "adds the behavior to the animator" do
-      @subject.animator.behaviors.count.should.equal 1
+    it 'the behaviour is a UIGravityBehavior behaviour' do
+      controller.animator.behaviors[0].class.should.equal UIGravityBehavior
     end
   end
 end

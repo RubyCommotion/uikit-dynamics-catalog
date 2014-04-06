@@ -1,5 +1,5 @@
 class AttachmentsView < BaseViewController
-  attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :square1_attachment_view, :attachment_view
+  attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view
 
   def loadView
     self.view = DecorationView.alloc.init
@@ -7,11 +7,9 @@ class AttachmentsView < BaseViewController
 
   def viewDidLoad
     super
-
     create_subviews
     create_gesture_recognizer
     create_animator_and_behaviors
-
     attachment_view.center = attachment_behavior.anchorPoint
     self.view.trackAndDrawAttachmentFromView(attachment_view, toView: square1, withAttachmentOffset: CGPointMake(-25.0, -25.0))
   end
@@ -57,12 +55,12 @@ class AttachmentsView < BaseViewController
       self.box1 = new_box(0,0)
       sq1.addSubview(box1)
       attachment_point_mask_image = UIImage.imageNamed('attachment_point_mask')
-      self.square1_attachment_view = UIImageView.alloc.initWithFrame([[44, 44], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]])
-      square1_attachment_view.image = attachment_point_mask_image
-      square1_attachment_view.center = CGPointMake(25.0, 25.0)
-      square1_attachment_view.tintColor = UIColor.blueColor
-      square1_attachment_view.image = square1_attachment_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-      sq1.addSubview(square1_attachment_view)
+      self.sq1_attachment_image_view = UIImageView.alloc.initWithFrame([[44, 44], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]])
+      sq1_attachment_image_view.image = attachment_point_mask_image
+      sq1_attachment_image_view.center = CGPointMake(25.0, 25.0)
+      sq1_attachment_image_view.tintColor = UIColor.blueColor
+      sq1_attachment_image_view.image = sq1_attachment_image_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+      sq1.addSubview(sq1_attachment_image_view)
     end
   end
 
@@ -80,7 +78,7 @@ class AttachmentsView < BaseViewController
 
   def create_attachment_view
     attachment_point_mask_image = UIImage.imageNamed('attachment_point_mask')
-    @attachment_view ||=  UIImageView.alloc.initWithFrame([[12, 76], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]]).tap do |att_vw|
+    @attachment_view ||=  UIImageView.alloc.initWithFrame([[12, 76], [attachment_point_mask_image.size.width, attachment_point_mask_image.size.height]]).tap do |att_vw|
       att_vw.image = attachment_point_mask_image
       att_vw.tintColor = UIColor.redColor
       att_vw.image = att_vw.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)

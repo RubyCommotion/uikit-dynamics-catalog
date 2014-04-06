@@ -1,5 +1,7 @@
 class AppDelegate
+
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    return true if RUBYMOTION_ENV == 'test'
     table_controller = ExamplesTableController.alloc.init
     nav_controller = UINavigationController.alloc.initWithRootViewController(table_controller)
 

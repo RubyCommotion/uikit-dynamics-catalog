@@ -1,42 +1,64 @@
 describe AttachmentsView do
-  before do
-    @subject = AttachmentsView.new
+
+  tests AttachmentsView
+
+  after do
+    SpecHelper.window_cleanup
   end
 
-  describe '#viewDidLoad' do
+  describe '#loadView' do
     it 'creates a DecorationView root view' do
-      @subject.view.class.should.equal DecorationView
+      controller.view.class.should.equal DecorationView
     end
   end
 
   describe '#viewDidLoad' do
-    before do
-      @subject.viewDidLoad
+
+   it 'added four subviews' do
+      controller.self.view.subviews.count.should.equal 4
+    end
+
+    it 'created an ImageView subview: square1' do
+      controller.sq1_attachment_image_view.class.should.equal UIImageView
+    end
+
+    it 'added two subviews to the square1 ImageView ' do
+      controller.square1.subviews.count.should.equal 2
+    end
+
+    it 'created an ImageView subview: @box1' do
+      controller.box1.class.should.equal UIImageView
+    end
+
+    it 'created a UILabel subview' do
+      # use to send to access private method
+      controller.send(:create_instructions_label).class.should.equal UILabel
+    end
+
+    it 'added a panGestureRecognizer for the root view' do
+      controller.self.view.gestureRecognizers.count.should.equal 1
     end
 
     it 'added two behaviors' do
-      @subject.animator.behaviors.count.should.equal 2
+      controller.animator.behaviors.count.should.equal 2
     end
 
     it 'added a collision behaviour with mode UICollisionBehaviorModeEverything' do
-      @subject.collision_behavior.collisionMode.should.equal(-1)
+      controller.collision_behavior.collisionMode.should.equal(-1)
     end
 
     it 'added an attachment behaviour with one item' do
-      @subject.attachment_behavior.items.count.should.equal 1
+      controller.attachment_behavior.items.count.should.equal 1
     end
 
-    it 'added three subviews' do
-      @subject.self.view.subviews.count.should.not.equal 0
+    it 'creates an observer for DecorationView\'s attachment_point_view object\'s centre method' do
+      should.not.raise(NSRangeException) {controller.view.attachment_point_view.removeObserver(controller.view, forKeyPath: 'center') }
+      should.raise(NSRangeException) {controller.view.attachment_point_view.removeObserver(controller.view, forKeyPath: 'not_center') }
     end
 
-    it 'added two subviews to the square1 subview ' do
-      @subject.square1.subviews.count.should.equal 2
+    it 'creates an observer for DecorationView\'s attached_view object\'s centre method' do
+      should.not.raise(NSRangeException) {controller.view.attached_view.removeObserver(controller.view, forKeyPath: 'center') }
+      should.raise(NSRangeException) {controller.view.attached_view.removeObserver(controller.view, forKeyPath: 'not_center') }
     end
-
-    it 'added one panGestureRecognizer to the root view' do
-      @subject.self.view.gestureRecognizers.count.should.equal 2
-    end
-
   end
 end
