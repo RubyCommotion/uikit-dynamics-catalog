@@ -38,11 +38,14 @@ class DecorationView < UIView
     if (temporary)
       UIView.animateWithDuration(1.0, animations: ->{ arrow_view.alpha = 0 })
     end
+    arrow_view
   end
 
 
   def trackAndDrawAttachmentFromView(attachment_point_view, toView: attached_view, withAttachmentOffset: attachment_offset)
-    self.attachment_point_view = attachment_point_view; self.attached_view = attached_view;  self.attachment_offset = attachment_offset
+    self.attachment_point_view = attachment_point_view
+    self.attached_view = attached_view
+    self.attachment_offset = attachment_offset
 
     # Tracking changes to the properties (see layoutSubviews) of any id<UIDynamicItem> involved in  a simulation incurs a performance cost.
     # Observe the 'center' property of both views to know when they move.
@@ -131,15 +134,15 @@ class DecorationView < UIView
   private
 
   def create_arrow_view
-      # First time initialization.
-      arrow_image = UIImage.imageNamed('arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-      self.arrow_view = UIImageView.alloc.initWithImage(arrow_image)
-      arrow_view.bounds = CGRectMake(0, 0, arrow_image.size.width, arrow_image.size.height)
-      arrow_view.contentMode = UIViewContentModeRight
-      arrow_view.clipsToBounds = true
-      arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
-      arrow_view.alpha = 0
-      self.addSubview(arrow_view)
+    # First time initialization.
+    arrow_image = UIImage.imageNamed('arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+    self.arrow_view = UIImageView.alloc.initWithImage(arrow_image)
+    arrow_view.bounds = CGRectMake(0, 0, arrow_image.size.width, arrow_image.size.height)
+    arrow_view.contentMode = UIViewContentModeRight
+    arrow_view.clipsToBounds = true
+    arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
+    arrow_view.alpha = 0
+    self.addSubview(arrow_view)
   end
 
 

@@ -1,14 +1,14 @@
 class ExamplesTableController < UITableViewController
   def viewDidLoad
     super
-    self.title = "UIKit Examples"
+    self.title = 'UIKit Dynamics Catalog Examples'
     self.view.backgroundColor = UIColor.whiteColor
     self.tableView.dataSource = self
     self.tableView.delegate = self
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    @cell_identifier ||= "cell_identifier"
+    @cell_identifier ||= 'cell_identifier'
     cell = tableView.dequeueReusableCellWithIdentifier(@cell_identifier)
     cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: @cellIdentifier)
     cell.textLabel.text = data[indexPath.row][:title]
@@ -29,24 +29,23 @@ class ExamplesTableController < UITableViewController
       {title: 'Attachments + Collision',
         controller: AttachmentsView
       },
+      {title: 'Collisions + Gravity + Spring',
+        controller: CollisionsGravitySpringViewController
+      },
+      {
+        title: 'Continuous Push + Collision',
+        controller: ContinuousPushViewController
+      },
       {title: 'Custom Dynamic Item',
         controller: CustomDynamicItemViewController
       },
       {
-        title: "Gravity",
+        title: 'Gravity',
         controller: GravityViewController
       },
       {
         title: 'Gravity + Collision',
         controller: CollisionViewController
-      },
-      {
-        title: 'Snap',
-        controller: SnapViewController
-      },
-      {
-        title: 'Continuous Push + Collision',
-        controller: ContinuousPushViewController
       },
       {
         title: 'Instantaneous Push + Collision',
@@ -59,6 +58,10 @@ class ExamplesTableController < UITableViewController
       {
         title: 'Pendulum (Composite Behavior)',
         controller: PendulumViewController
+      },
+      {
+        title: 'Snap',
+        controller: SnapViewController
       }
     ]
   end
