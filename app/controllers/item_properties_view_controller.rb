@@ -1,5 +1,4 @@
 class ItemPropertiesViewController < BaseViewController
-  attr_accessor :box_one, :box_two, :box_two_property, :box_one_property
 
   def viewDidLoad
     super
@@ -28,6 +27,11 @@ class ItemPropertiesViewController < BaseViewController
     self.box_one_property = UIDynamicItemBehavior.alloc.initWithItems([box_one])
     animator.addBehavior(box_one_property)
   end
+
+  protected
+  attr_accessor :box_one, :box_two, :box_two_property, :box_one_property
+
+  private
 
   def new_replay_button
     UIBarButtonItem.alloc.initWithTitle("Restart", style: UIBarButtonItemStylePlain, target: self, action: "replay_action")

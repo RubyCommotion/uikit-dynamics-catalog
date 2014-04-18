@@ -1,5 +1,9 @@
 describe ExamplesTableController do
 
+  before do
+    @help_method = SpecHelper.create_help_methods
+  end
+
   tests ExamplesTableController
 
   describe '#viewDidLoad' do
@@ -39,7 +43,7 @@ describe ExamplesTableController do
     end
 
     it 'should instantiate 10 view controller objects' do
-      SpecHelper.view_controller_instances_exist(controller.data).should.equal true
+      @help_method.view_controller_instances_exist(controller.data).should.equal true
     end
 
   end

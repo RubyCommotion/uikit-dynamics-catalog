@@ -2,6 +2,10 @@ describe GravityViewController do
 
   tests GravityViewController
 
+  after do
+    SpecHelper.create_help_methods.window_cleanup(window, controller)
+  end
+
   describe '#viewDidLoad' do
     it 'created an ImageView subview: box' do
       controller.box.class.should.equal UIImageView

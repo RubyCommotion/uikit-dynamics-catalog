@@ -1,7 +1,5 @@
 class DecorationView < UIView
 
-  attr_accessor :arrow_view, :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
-
   def init
     super
     if self
@@ -60,10 +58,12 @@ class DecorationView < UIView
 
     arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
 
-    if center_point_view
-      center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
-    end
+    # ** Unused Code in Objective-C original source code **
+    # if center_point_view
+    #   center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+    # end
 
+    # access limited to trackAndDrawAttachmentFromView instance method
     if attachment_point_view && attached_view
 
       attachment_points = create_attachment_points
@@ -75,7 +75,7 @@ class DecorationView < UIView
 
       dashes = number_of_required_dashes(distance_and_angle[:distance])
 
-      dash_spacing = (distance_and_angle[:distance] - dashes[:d]) / (dashes[:required_dashes] + 1)
+      dash_spacing = dash_spacing(distance_and_angle[:distance], dashes[:d], dashes[:required_dashes])
 
       # Hide the excess dashes.
       dashes[:required_dashes] = hide_dashes(dashes[:required_dashes], dashes[:max_dashes])
@@ -99,11 +99,18 @@ class DecorationView < UIView
     end
   end
 
+  protected
+  attr_accessor :arrow_view, :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
+
   private
+
+  def dash_spacing(distance, dashes_size, required_dashes)
+    (distance - dashes_size)/(required_dashes + 1)
+  end
 
   def calc_distance_and_angle(attachment_point_view_center, attached_view_attachment_point)
 
-    distance_and_angle = {distance:nil, angle: nil}
+    distance_and_angle = Hash.new
 
     distance_and_angle[:distance] = Math.sqrt( ((attached_view_attachment_point.x-attachment_point_view_center.x) ** 2.0) +
                           ((attached_view_attachment_point.y-attachment_point_view_center.y) ** 2.0) )
@@ -113,22 +120,17 @@ class DecorationView < UIView
   end
 
   def create_attachment_points
-
-    attachment_points = {attachment_point_view_center:nil, attached_view_attachment_point: nil}
-
-    attachment_points[:attachment_point_view_center] = CGPointMake(self.attachment_point_view.bounds.size.width/2, self.attachment_point_view.bounds.size.height/2)
-    attachment_points[:attachment_point_view_center] = self.attachment_point_view.convertPoint(attachment_points[:attachment_point_view_center], toView: self)
-    attachment_points[:attached_view_attachment_point] = CGPointMake(self.attached_view.bounds.size.width/2 + self.attachment_offset.x, self.attached_view.bounds.size.height/2 + self.attachment_offset.y)
-    attachment_points[:attached_view_attachment_point] =  self.attached_view.convertPoint(attachment_points[:attached_view_attachment_point], toView: self)
+    attachment_points = Hash.new
+    attachment_points[:attachment_point_view_center] = CGPointMake(attachment_point_view.bounds.size.width/2, attachment_point_view.bounds.size.height/2)
+    attachment_points[:attachment_point_view_center] = attachment_point_view.convertPoint(attachment_points[:attachment_point_view_center], toView: self)
+    attachment_points[:attached_view_attachment_point] = CGPointMake(attached_view.bounds.size.width/2 + attachment_offset.x, attached_view.bounds.size.height/2 + attachment_offset.y)
+    attachment_points[:attached_view_attachment_point] =  attached_view.convertPoint(attachment_points[:attached_view_attachment_point], toView: self)
     attachment_points
   end
 
 
   def number_of_required_dashes(distance)
     dashes = {required_dashes: 0, d: 0.0, max_dashes:attachment_decoration_layers.count, dash_layer: nil }
-
-    dashes[:d] = 0.0
-    dashes[:max_dashes] = attachment_decoration_layers.count
 
     while dashes[:required_dashes] < dashes[:max_dashes]
       dashes[:dash_layer] = attachment_decoration_layers[dashes[:required_dashes]]

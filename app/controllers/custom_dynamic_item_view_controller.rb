@@ -1,6 +1,5 @@
 class CustomDynamicItemViewController < BaseViewController
 
-  attr_accessor :button1, :button1_bounds, :animator
 
   def loadView
     self.view = DecorationView.alloc.init
@@ -54,6 +53,9 @@ class CustomDynamicItemViewController < BaseViewController
     push_behavior.setActive(true)
     self.animator = animator
   end
+
+  protected
+  attr_accessor :button1, :button1_bounds, :animator
 
   private
 

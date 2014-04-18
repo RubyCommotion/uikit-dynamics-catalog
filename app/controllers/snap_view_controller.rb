@@ -1,5 +1,4 @@
 class SnapViewController < BaseViewController
-  attr_accessor :snap_behavior
 
   def viewDidLoad
     super
@@ -8,6 +7,11 @@ class SnapViewController < BaseViewController
     gesture = UITapGestureRecognizer.alloc.initWithTarget(self, action: "handle_tap:")
     self.view.addGestureRecognizer(gesture)
   end
+
+  protected
+  attr_accessor :snap_behavior
+
+  private
 
   def handle_tap(gesture)
     point = gesture.locationInView(view)

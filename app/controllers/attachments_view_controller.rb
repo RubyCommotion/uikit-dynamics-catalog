@@ -1,5 +1,4 @@
 class AttachmentsView < BaseViewController
-  attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view
 
   def loadView
     self.view = DecorationView.alloc.init
@@ -13,6 +12,11 @@ class AttachmentsView < BaseViewController
     attachment_view.center = attachment_behavior.anchorPoint
     self.view.trackAndDrawAttachmentFromView(attachment_view, toView: square1, withAttachmentOffset: CGPointMake(-25.0, -25.0))
   end
+
+
+  protected
+
+  attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view
 
   private
 

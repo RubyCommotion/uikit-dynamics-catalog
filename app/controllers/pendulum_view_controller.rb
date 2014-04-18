@@ -1,5 +1,4 @@
 class PendulumViewController < BaseViewController
-  attr_accessor :attachmentPoint, :pendulumBehavior, :animator
 
   def loadView
     self.view = DecorationView.alloc.init
@@ -37,6 +36,12 @@ class PendulumViewController < BaseViewController
     gesture = UIPanGestureRecognizer.alloc.initWithTarget(self, action: "dragWeight:")
     self.view.addGestureRecognizer(gesture)
   end
+
+
+  protected
+  attr_accessor :attachmentPoint, :pendulumBehavior, :animator
+
+  private
 
   def dragWeight(gesture)
 
