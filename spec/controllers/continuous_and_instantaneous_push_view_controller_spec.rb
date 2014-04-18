@@ -2,6 +2,9 @@ vcs = [ContinuousPushViewController, InstantaneousPushViewController]
 
 vcs.each do |vc|
   describe "\nTest: ===#{vc} ===" do
+    after do
+      SpecHelper.create_help_methods.window_cleanup(window, controller)
+    end
     tests vc
     describe "#{vc.to_s}" do
 

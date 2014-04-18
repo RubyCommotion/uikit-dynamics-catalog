@@ -3,8 +3,9 @@ describe AttachmentsView do
   tests AttachmentsView
 
   after do
-    SpecHelper.window_cleanup
+    SpecHelper.create_help_methods.window_cleanup(window, controller)
   end
+
 
   describe '#loadView' do
     it 'creates a DecorationView root view' do

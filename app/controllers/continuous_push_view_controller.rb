@@ -1,8 +1,5 @@
 class ContinuousPushViewController < BaseViewController
 
-  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
-
-
   def loadView
     self.view = DecorationView.alloc.init
     self.view.accessibilityLabel = 'This is main view'
@@ -51,6 +48,10 @@ class ContinuousPushViewController < BaseViewController
     push_behavior.setMagnitude(distance / 100.0)
     push_behavior.setAngle(angle)
   end
+
+  protected
+
+  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
 
   private
 

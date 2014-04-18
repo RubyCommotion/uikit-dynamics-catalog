@@ -1,7 +1,5 @@
 class InstantaneousPushViewController  < BaseViewController
 
-  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
-
   def loadView
     self.view = DecorationView.alloc.init
     self.view.accessibilityLabel = 'This is main view'
@@ -52,6 +50,9 @@ class InstantaneousPushViewController  < BaseViewController
     # it when changing the impulse vector.
     push_behavior.setActive(true)
   end
+
+  protected
+  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
 
   private
 
