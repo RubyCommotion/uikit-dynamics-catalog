@@ -1,2 +1,0 @@
-class CollisionsGravitySpringViewController < BaseViewController
-end

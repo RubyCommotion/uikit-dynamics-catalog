@@ -1,6 +1,5 @@
 class CustomDynamicItemViewController < BaseViewController
 
-
   def loadView
     self.view = DecorationView.alloc.init
   end
@@ -14,50 +13,59 @@ class CustomDynamicItemViewController < BaseViewController
     # succession).  Without reverting to the initial bounds, this would cause
     # the button to grow uncontrollably in size.
     super
-    button1 = create_button
-    self.view.addSubview(button1)
-    self.button1_bounds = button1.bounds
+    button = create_button
+    self.view.addSubview(button)
+    self.button_bounds = button.bounds
     # Force the button image to scale with its bounds.
-    button1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill
-    button1.contentVerticalAlignment = UIControlContentVerticalAlignmentFill
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill
+    button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill
   end
 
 
   def button_action(sender)
     # Reset the buttons bounds to their initial state.  See the comment in viewDidLoad.
-    sender.bounds = button1_bounds
 
+    button_bounds_dynamic_item = create_bb_dynamic_item(sender)
+
+    # Create an attachment between the button_bounds_dynamic_item and the initial
+    # value of the button's bounds.
+
+    create_attachment_behaviour(button_bounds_dynamic_item)
+    create_push_behaviour(button_bounds_dynamic_item)
+  end
+
+  protected
+  attr_accessor :button_bounds, :animator
+
+  private
+
+  def create_bb_dynamic_item(sender)
+    sender.bounds = button_bounds
     # UIDynamicAnimator instances are relatively cheap to create.
-    animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
-
+    self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
     # APLPositionToBoundsMapping maps the center of an id<ResizableDynamicItem>
     # (UIDynamicItem with mutable bounds) to its bounds.  As dynamics modifies
     # the center.x, the changes are forwarded to the bounds.size.width.
     # Similarly, as dynamics modifies the center.y, the changes are forwarded
     # to bounds.size.height.
-    button_bounds_dynamic_item = PositionToBoundsMapping.alloc.initWithTarget(sender)
+    PositionToBoundsMapping.alloc.initWithTarget(sender)
+  end
 
-    # Create an attachment between the button_bounds_dynamic_item and the initial
-    # value of the button's bounds.
-
+  def create_attachment_behaviour(button_bounds_dynamic_item)
     centre_pt = button_bounds_dynamic_item.center
     attachment_behavior = UIAttachmentBehavior.alloc.initWithItem(button_bounds_dynamic_item, attachedToAnchor:centre_pt)
     attachment_behavior.setFrequency(2.0)
     attachment_behavior.setDamping(0.3)
     animator.addBehavior(attachment_behavior)
+  end
 
+  def create_push_behaviour(button_bounds_dynamic_item)
     push_behavior = UIPushBehavior.alloc.initWithItems([button_bounds_dynamic_item], mode:UIPushBehaviorModeInstantaneous)
     push_behavior.angle = Math::PI/4.0
     push_behavior.magnitude = 2.0
     animator.addBehavior(push_behavior)
     push_behavior.setActive(true)
-    self.animator = animator
   end
-
-  protected
-  attr_accessor :button1, :button1_bounds, :animator
-
-  private
 
   def create_button
       button_background = UIImage.imageNamed( 'button_outline.png' )
