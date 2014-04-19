@@ -29,9 +29,6 @@ class ExamplesTableController < UITableViewController
       {title: 'Attachments + Collision',
         controller: AttachmentsView
       },
-      {title: 'Collisions + Gravity + Spring',
-        controller: CollisionsGravitySpringViewController
-      },
       {
         title: 'Continuous Push + Collision',
         controller: ContinuousPushViewController
