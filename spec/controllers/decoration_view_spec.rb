@@ -2,7 +2,7 @@ describe DecorationView do
 
   before do
     @view = DecorationView.alloc.init
-    @help_method = SpecHelper.create_help_methods
+    @help_methods = SpecHelper.create_help_methods
   end
 
   describe '#init' do
@@ -11,36 +11,19 @@ describe DecorationView do
       @view.superclass.should.equal UIView
     end
 
+    it 'should create seven attr_accessors :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view, arrow_view' do
+      @help_methods.do_methods_respond(@view, :attachment_point_view, :attachment_point_view=, :attached_view, :attached_view=,
+                                   :attachment_offset, :attachment_offset=,
+                                   :attachment_decoration_layers, :attachment_decoration_layers=,
+                                   :arrow_view, :arrow_view=,
+                                   :center_point_view, :center_point_view= ).
+                                   should.equal 'All Methods responded'
+    end
+
+
     it 'should create an arrow_view attr_accessor initialized with an UIImageView' do
       @view.instance_variable_get('@arrow_view').class.should.equal UIImageView
-      @view.arrow_view = 'An arrow'
-      @view.arrow_view.should.equal 'An arrow'
     end
-
-    it 'should create a attachment_point_view attr_accessor' do
-      @view.respond_to?(:attachment_point_view).should == true
-      @view.respond_to?(:attachment_point_view=).should == true
-    end
-
-    it 'should create a attached_view attr_accessor' do
-      @view.respond_to?(:attached_view).should == true
-      @view.respond_to?(:attached_view).should == true
-    end
-
-    it 'should create a attachment_offset attr_accessor' do
-      @view.respond_to?(:attachment_offset).should == true
-      @view.respond_to?(:attachment_offset).should == true
-    end
-
-    it 'should create a attachment_decoration_layers attr_accessor' do
-       @view.respond_to?(:attachment_decoration_layers).should == true
-       @view.respond_to?(:attachment_decoration_layers).should == true
-     end
-
-    it 'should create a center_point_view attr_accessor' do
-       @view.respond_to?(:center_point_view).should == true
-       @view.respond_to?(:center_point_view).should == true
-     end
 
     it 'should create an attachment_decoration_layers array of four UIImageViews' do
       @view.instance_variable_get('@attachment_decoration_layers').class.should.equal Array
@@ -94,7 +77,7 @@ describe DecorationView do
                                                                       withAttachmentOffset: CGPointMake(-25.0, -25.0))
 
       @attachment_points =  @attachment_view_controller.view.send(:create_attachment_points)
-      @calc_distance_and_angle = @help_method.calc_distance_and_angle(@view)
+      @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@view)
       @required_dashes = @view.send(:number_of_required_dashes, @calc_distance_and_angle[:distance])
     end
 
@@ -105,7 +88,7 @@ describe DecorationView do
 
     it 'should invoke #make_transform_object and transform the attachment_point_view via a TRANSLATION transform' do
       should.not.raise(ArgumentError) {@view.send(:make_transform_object, @attachment_points[:attachment_point_view_center], @calc_distance_and_angle[:angle])}
-      @attachment_points_that_fail = @help_method.create_object_with_method_x # an object with x and y mewthods that return a string
+      @attachment_points_that_fail = @help_methods.create_object_with_method_x # an object with x and y mewthods that return a string
       # an ArgumentError when try to give CGAffineTransformMakeTranslation a string argument
       should.raise(ArgumentError) {@view.send(:make_transform_object, @attachment_points_that_fail, @calc_distance_and_angle[:angle])}
     end
@@ -146,7 +129,7 @@ describe DecorationView do
 
   describe '#calc_distance_and_angle' do
     before do
-      @calc_distance_and_angle = @help_method.calc_distance_and_angle(@view)
+      @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@view)
     end
 
     it 'should create a Hash that contains distance and angle values of class type Float' do
@@ -165,7 +148,7 @@ describe DecorationView do
 
   describe '#number_of_required_dashes' do
     before do
-      @calc_distance_and_angle = @help_method.calc_distance_and_angle(@view)
+      @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@view)
       @required_dashes = @view.send(:number_of_required_dashes, @calc_distance_and_angle[:distance])
     end
 
@@ -176,7 +159,7 @@ describe DecorationView do
 
   describe '#dash_spacing' do
     before do
-      @calc_distance_and_angle = @help_method.calc_distance_and_angle(@view)
+      @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@view)
       @required_dashes = @view.send(:number_of_required_dashes, @calc_distance_and_angle[:distance])
     end
     it 'should set the spacing between dashes.' do

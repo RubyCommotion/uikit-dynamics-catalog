@@ -5,7 +5,6 @@ class ItemPropertiesViewController < BaseViewController
     self.navigationItem.rightBarButtonItem = new_replay_button
     self.box_one = new_box(40, 100)
     self.view.addSubview(box_one)
-
     self.box_two = new_box(180, 100)
     self.view.addSubview(box_two)
   end
