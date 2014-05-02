@@ -15,6 +15,6 @@ class BaseViewController < UIViewController
   end
 
   def animator
-    @animator ||= UIDynamicAnimator.alloc.initWithReferenceView(view)
+    @animator ||= UIDynamicAnimator.alloc.initWithReferenceView(self.view)
   end
 end

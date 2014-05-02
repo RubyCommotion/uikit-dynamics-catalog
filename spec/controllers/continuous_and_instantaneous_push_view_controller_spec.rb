@@ -2,24 +2,20 @@ vcs = [ContinuousPushViewController, InstantaneousPushViewController]
 
 vcs.each do |vc|
   describe "\nTest: ===#{vc} ===" do
+
+    before do
+      @help_methods = SpecHelper.create_help_methods
+    end
+
     after do
       SpecHelper.create_help_methods.window_cleanup(window, controller)
     end
+
     tests vc
-    describe "#{vc.to_s}" do
+    describe "#{vc.to_s}\'s init" do
 
-      it 'should create a square1 attr_accessor' do
-        controller.respond_to?(:square1).should == true
-        controller.respond_to?(:square1=).should == true
-      end
-      it 'should create a animator attr_accessor' do
-        controller.respond_to?(:animator).should == true
-        controller.respond_to?(:animator=).should == true
-      end
-
-      it 'should create a push_behavior attr_accessor' do
-        controller.respond_to?(:push_behavior).should == true
-        controller.respond_to?(:push_behavior=).should == true
+      it 'should create a square1, animator and push_behavior attr_accessors' do
+        @help_methods.do_methods_respond(controller, :square1, :square1=, :animator, :animator, :push_behavior, :push_behavior=).should.equal 'All Methods responded'
       end
     end
 
