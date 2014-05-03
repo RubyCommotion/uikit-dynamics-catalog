@@ -7,17 +7,8 @@ class PendulumViewController < BaseViewController
   def viewDidLoad
     super
 
-    self.box = new_box(100, 270)
-    self.view.addSubview(box)
-
-    image = UIImage.imageNamed("attachment_point")
-
-    self.attachmentPoint = UIImageView.alloc.initWithFrame([[150, 120], [image.size.height, image.size.width]])
-    self.attachmentPoint.image = image
-    self.view.addSubview(self.attachmentPoint)
-
-    self.attachmentPoint.tintColor = UIColor.redColor
-    self.attachmentPoint.image = self.attachmentPoint.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+    create_box_image_view_subview
+    create_attachment_point_image_view_subview
 
     # Visually show the connection between the attachmentPoint and the box. 
     self.view.trackAndDrawAttachmentFromView(self.attachmentPoint,toView:self.box,withAttachmentOffset:CGPointMake(0, -0.95 * self.box.bounds.size.height/2))
@@ -42,6 +33,21 @@ class PendulumViewController < BaseViewController
   attr_accessor :attachmentPoint, :pendulumBehavior, :animator
 
   private
+
+  def create_box_image_view_subview
+    self.box = new_box(100, 270)
+    self.view.addSubview(box)
+    p "Object ids are: #{self.box.object_id} #{self.view.subviews[1].object_id}"
+  end
+
+  def create_attachment_point_image_view_subview
+    image = UIImage.imageNamed("attachment_point")
+    self.attachmentPoint = UIImageView.alloc.initWithFrame([[150, 120], [image.size.height, image.size.width]])
+    attachmentPoint.image = image
+    self.view.addSubview(attachmentPoint)
+    attachmentPoint.tintColor = UIColor.redColor
+    attachmentPoint.image = self.attachmentPoint.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+  end
 
   def dragWeight(gesture)
 
