@@ -12,8 +12,8 @@ describe AttachmentsView do
 
   describe '#init' do
 
-    it 'should create seven attr_accessors :animator, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
-      @help_methods.do_methods_respond(controller, :animator, :animator=, :collision_behavior, :collision_behavior=,
+    it 'should create seven attr_accessors :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
+      @help_methods.do_methods_respond(controller, :collision_behavior, :collision_behavior=,
                                    :attachment_behavior, :attachment_behavior=, :square1, :square1=,
                                    :box1, :box1=, :sq1_attachment_image_view, :sq1_attachment_image_view=, :attachment_view, :attachment_view=).
                                    should.equal 'All Methods responded'

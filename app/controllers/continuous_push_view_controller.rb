@@ -16,7 +16,6 @@ class ContinuousPushViewController < BaseViewController
 
   def viewDidAppear(animated)
   	super
-    self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
     collision_behavior = UICollisionBehavior.alloc.initWithItems([square1])
     # Account for any top and bottom bars when setting up the reference bounds.
     collision_behavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(
@@ -51,7 +50,7 @@ class ContinuousPushViewController < BaseViewController
 
   protected
 
-  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
+  attr_accessor :square1, :push_behavior, :distance, :angle
 
   private
 

@@ -18,12 +18,12 @@ class InstantaneousPushViewController  < BaseViewController
   def viewDidAppear(animated)
     super
 
-    self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
-
     collisionBehavior = UICollisionBehavior.alloc.initWithItems([square1])
     # Account for any top and bottom bars when setting up the reference bounds.
-    collisionBehavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(
-      UIEdgeInsetsMake(self.topLayoutGuide.length, 0, self.bottomLayoutGuide.length, 0)
+    collisionBehavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(UIEdgeInsetsMake(self.topLayoutGuide.length,
+                                                                                          0,
+                                                                                          self.bottomLayoutGuide.length,
+                                                                                          0)
     )
     animator.addBehavior(collisionBehavior)
 
@@ -52,7 +52,7 @@ class InstantaneousPushViewController  < BaseViewController
   end
 
   protected
-  attr_accessor :square1, :animator, :push_behavior, :distance, :angle
+  attr_accessor :square1, :push_behavior, :distance, :angle
 
   private
 

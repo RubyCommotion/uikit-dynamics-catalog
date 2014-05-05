@@ -35,14 +35,13 @@ class CustomDynamicItemViewController < BaseViewController
   end
 
   protected
-  attr_accessor :button_bounds, :animator
+  attr_accessor :button_bounds
 
   private
 
   def create_bb_dynamic_item(sender)
     sender.bounds = button_bounds
     # UIDynamicAnimator instances are relatively cheap to create.
-    self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
     # APLPositionToBoundsMapping maps the center of an id<ResizableDynamicItem>
     # (UIDynamicItem with mutable bounds) to its bounds.  As dynamics modifies
     # the center.x, the changes are forwarded to the bounds.size.width.

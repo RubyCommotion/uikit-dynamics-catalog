@@ -14,8 +14,8 @@ vcs.each do |vc|
     tests vc
     describe "#{vc.to_s}\'s init" do
 
-      it 'should create a square1, animator and push_behavior attr_accessors' do
-        @help_methods.do_methods_respond(controller, :square1, :square1=, :animator, :animator, :push_behavior, :push_behavior=).should.equal 'All Methods responded'
+      it 'should create a square1 and push_behavior attr_accessors' do
+        @help_methods.do_methods_respond(controller, :square1, :square1=, :push_behavior, :push_behavior=).should.equal 'All Methods responded'
       end
     end
 

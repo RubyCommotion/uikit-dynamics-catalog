@@ -6,8 +6,8 @@ describe CustomDynamicItemViewController do
     SpecHelper.create_help_methods.window_cleanup(window, controller)
   end
 
-  it 'should create an attr_accessors button_bounds and animator' do
-    SpecHelper.create_help_methods.do_methods_respond(controller, :button_bounds, :button_bounds=, :animator, :animator=).should.equal 'All Methods responded'
+  it 'should create an attr_accessor button_bounds' do
+    SpecHelper.create_help_methods.do_methods_respond(controller, :button_bounds, :button_bounds=).should.equal 'All Methods responded'
   end
 
   describe '#loadView' do

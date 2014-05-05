@@ -16,7 +16,7 @@ class AttachmentsView < BaseViewController
 
   protected
 
-  attr_accessor :animator, :collision_behavior, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view
+  attr_accessor :collision_behavior, :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view
 
   private
 
@@ -36,7 +36,6 @@ class AttachmentsView < BaseViewController
   end
 
   def create_animator_and_behaviors
-    self.animator = UIDynamicAnimator.alloc.initWithReferenceView(self.view)
     self.collision_behavior = UICollisionBehavior.alloc.initWithItems([square1])
     collision_behavior.translatesReferenceBoundsIntoBoundary = true
     animator.addBehavior(collision_behavior)
@@ -73,7 +72,7 @@ class AttachmentsView < BaseViewController
       lbl.enabled = false
       lbl.contentMode = UIViewContentModeLeft
       lbl.clipsToBounds = true
-      lbl.text = 'Drag anywhere to move the square.'
+      lbl.text = 'Drag red circle to move the square.'
       lbl.adjustsFontSizeToFitWidth = true
       #lbl.textColor = UIColor.darkTextColor
       lbl.font = UIFont.fontWithName('Chalkduster', size:15)

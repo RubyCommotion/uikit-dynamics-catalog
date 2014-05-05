@@ -45,6 +45,10 @@ class ExamplesTableController < UITableViewController
         controller: CollisionViewController
       },
       {
+        title: "Gravity Spring",
+        controller: GravitySpringController
+      },
+      {
         title: 'Instantaneous Push + Collision',
         controller: InstantaneousPushViewController
       },

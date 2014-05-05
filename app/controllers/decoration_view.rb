@@ -83,10 +83,7 @@ class DecorationView < UIView
 
       transform_object = make_transform_object(attachment_points[:attachment_point_view_center], distance_and_angle[:angle])
       do_transform(dashes[:required_dashes], dashes[:dash_layer], dash_spacing, transform_object)
-
     end
-
-
   end
 
 

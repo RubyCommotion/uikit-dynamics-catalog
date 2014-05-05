@@ -39,7 +39,7 @@ describe ExamplesTableController do
       controller.data.should.be.kind_of Array
     end
     it 'should contain entries for 10 controllers' do
-      controller.data.size.should.equal 9
+      controller.data.size.should.equal 10
     end
 
     it 'should instantiate 10 view controller objects' do
