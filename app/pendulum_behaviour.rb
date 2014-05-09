@@ -4,37 +4,30 @@ class PendulumBehaviour < UIDynamicBehavior
   def initWithWeight(item, suspendedFromPoint:p)
     init
 
-    gravityBehavior    = UIGravityBehavior.alloc.initWithItems([item])
-    attachmentBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:p)
-    draggingBehavior   = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:CGPointZero)
-    pushBehavior       = UIPushBehavior.alloc.initWithItems([item], mode:UIPushBehaviorModeInstantaneous)
-
+    self.pushBehavior = UIPushBehavior.alloc.initWithItems([item], mode:UIPushBehaviorModeInstantaneous)
     pushBehavior.active = false
 
-    self.addChildBehavior(gravityBehavior)
-    self.addChildBehavior(attachmentBehavior)
-
+    self.addChildBehavior( UIGravityBehavior.alloc.initWithItems([item]))
+    self.addChildBehavior( UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:p))
     self.addChildBehavior(pushBehavior)
-
-    self.draggingBehavior = draggingBehavior
-    self.pushBehavior = pushBehavior
+    self.draggingBehavior = UIAttachmentBehavior.alloc.initWithItem(item, attachedToAnchor:CGPointZero)
     self
   end
 
-  def beginDraggingWeightAtPoint(p)
+  def begin_dragging_weight_at_point(p)
     self.draggingBehavior.anchorPoint = p
-    self.addChildBehavior(self.draggingBehavior)
+    self.addChildBehavior(draggingBehavior)
   end
 
-  def dragWeightToPoint(p)
+  def drag_weight_to_point(p)
     self.draggingBehavior.anchorPoint = p
   end
 
-  def endDraggingWeightWithVelocity(v)
+  def end_dragging_weight_with_velocity(v)
+    v = CGPointMake(-7.0, 11.0)
     magnitude = Math.sqrt(((v.x)**2.0)+((v.y)**2.0))
-    angle = Math.atan2(v.y, v.x)
-
     magnitude /= 500
+    angle = Math.atan2(v.y, v.x)
 
     self.pushBehavior.angle = angle
     self.pushBehavior.magnitude = magnitude

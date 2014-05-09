@@ -11,21 +11,19 @@ class PendulumViewController < BaseViewController
     create_box_image_view_subview
     create_attachment_point_image_view_subview
 
-    # Visually show the connection between the attachmentPoint and the box.
-    self.view.trackAndDrawAttachmentFromView(self.attachmentPoint,toView:self.box,withAttachmentOffset:CGPointMake(0, -0.95 * self.box.bounds.size.height/2))
+    # Visually show the connection between the attachment_point and the box.
+    self.view.trackAndDrawAttachmentFromView(self.attachment_point, toView:self.box,withAttachmentOffset:CGPointMake(0, -0.95 * self.box.bounds.size.height/2))
 
-    pendulumAttachmentPoint = self.attachmentPoint.center
     # An example of a high-level behavior simulating a simple pendulum.
-    pendulumBehavior = PendulumBehaviour.alloc.initWithWeight(self.box,suspendedFromPoint:pendulumAttachmentPoint)
-    animator.addBehavior(pendulumBehavior)
-    self.pendulumBehavior = pendulumBehavior
+    self.pendulum_behavior = PendulumBehaviour.alloc.initWithWeight(self.box,suspendedFromPoint:self.attachment_point.center)
+    animator.addBehavior(pendulum_behavior)
 
-    gesture = UIPanGestureRecognizer.alloc.initWithTarget(self, action: "dragWeight:")
+    gesture = UIPanGestureRecognizer.alloc.initWithTarget(self, action: "drag_weight:")
     self.view.addGestureRecognizer(gesture)
   end
 
   protected
-  attr_accessor :attachmentPoint, :pendulumBehavior
+  attr_accessor :attachment_point, :pendulum_behavior
 
   private
 
@@ -36,28 +34,31 @@ class PendulumViewController < BaseViewController
 
   def create_attachment_point_image_view_subview
     image = UIImage.imageNamed("attachment_point")
-    self.attachmentPoint = UIImageView.alloc.initWithFrame([[150, 120], [image.size.height, image.size.width]])
-    attachmentPoint.image = image
-    self.view.addSubview(attachmentPoint)
-    attachmentPoint.tintColor = UIColor.redColor
-    attachmentPoint.image = attachmentPoint.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-    attachmentPoint
+    self.attachment_point = UIImageView.alloc.initWithFrame([[150, 120], [image.size.height, image.size.width]])
+    attachment_point.image = image
+    self.view.addSubview(attachment_point)
+    attachment_point.tintColor = UIColor.redColor
+    attachment_point.image = attachment_point.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+    attachment_point
   end
 
-  def dragWeight(gesture)
+  def drag_weight(gesture)
+
+    dragged_within_box_bounds = CGRectContainsPoint(self.box.bounds, gesture.locationInView(self.box))
+    unless dragged_within_box_bounds
+      return
+    end
 
     case gesture.state
     when UIGestureRecognizerStateBegan
-      self.pendulumBehavior.beginDraggingWeightAtPoint(gesture.locationInView(self.view))
+      self.pendulum_behavior.begin_dragging_weight_at_point(gesture.locationInView(self.view))
     when UIGestureRecognizerStateEnded
-      self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
+      self.pendulum_behavior.end_dragging_weight_with_velocity(gesture.velocityInView(self.view))
     when UIGestureRecognizerStateCancelled
       gesture.enabled = true
-      self.pendulumBehavior.endDraggingWeightWithVelocity(gesture.velocityInView(self.view))
-    when -> (state)  { (!CGRectContainsPoint(self.box.bounds, gesture.locationInView(self.box))) }
-      gesture.enabled = false
+      self.pendulum_behavior.end_dragging_weight_with_velocity(gesture.velocityInView(self.view))
     else
-      self.pendulumBehavior.dragWeightToPoint(gesture.locationInView(self.view))
+      self.pendulum_behavior.drag_weight_to_point(gesture.locationInView(self.view))
     end
   end
 
@@ -71,6 +72,4 @@ class PendulumViewController < BaseViewController
       lbl.font = UIFont.fontWithName('Chalkduster', size:15)
     end
   end
-
-
 end

@@ -1,9 +1,10 @@
 describe CollisionViewController do
-  # before do
-  #   @subject = CollisionViewController.new
-  # end
 
   tests CollisionViewController
+
+  after do
+    SpecHelper.create_help_methods.window_cleanup(window, controller)
+  end
 
   describe "#viewDidLoad" do
     it "adds a box to the subview" do
@@ -12,10 +13,6 @@ describe CollisionViewController do
   end
 
   describe "#viewDidAppear" do
-    # before do
-    #   controller.viewDidLoad
-    #   controller.viewDidAppear(false)
-    # end
 
     it "add two behaviors" do
       controller.animator.behaviors.count.should.equal 2
