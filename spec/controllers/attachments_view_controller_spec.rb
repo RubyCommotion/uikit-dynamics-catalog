@@ -7,7 +7,7 @@ describe AttachmentsView do
   tests AttachmentsView
 
   after do
-    SpecHelper.create_help_methods.window_cleanup(window, controller)
+    @help_methods.window_cleanup(window, controller)
   end
 
   describe '#init' do

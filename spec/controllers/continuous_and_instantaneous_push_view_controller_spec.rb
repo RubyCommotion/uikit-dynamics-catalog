@@ -7,11 +7,13 @@ vcs.each do |vc|
       @help_methods = SpecHelper.create_help_methods
     end
 
-    after do
-      SpecHelper.create_help_methods.window_cleanup(window, controller)
-    end
 
     tests vc
+
+    after do
+      @help_methods.window_cleanup(window, controller)
+    end
+
     describe "#{vc.to_s}\'s init" do
 
       it 'should create a square1 and push_behavior attr_accessors' do
