@@ -17,7 +17,6 @@ describe PendulumViewController do
   end
 
   describe '#viewDidLoad' do
-    # subview tags are self.view 0, label 1, box 2 and attachmentPoint 3
     it 'should assign a UILabel as a controller Subview. ' do
       controller.view.subviews[1].class.should.equal UILabel
       controller.view.subviews[1].object_id.should.equal controller.instance_variable_get('@label').object_id

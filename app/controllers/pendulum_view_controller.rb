@@ -6,7 +6,6 @@ class PendulumViewController < BaseViewController
 
   def viewDidLoad
     super
-
     view.addSubview(create_instructions_label)
     create_box_image_view_subview
     create_attachment_point_image_view_subview
