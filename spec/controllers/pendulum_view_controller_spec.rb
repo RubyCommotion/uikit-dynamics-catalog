@@ -9,15 +9,14 @@ describe PendulumViewController do
     @help_methods.window_cleanup(window, controller)
   end
 
-  describe '#init' do
+  describe 'PendulumViewController #init' do
     it 'should create attr_accessors :attachmentPoint, :pendulumBehavior' do
       @help_methods.do_methods_respond(controller, :attachment_point, :attachment_point=, :pendulum_behavior, :pendulum_behavior=).
                                    should.equal 'All Methods responded'
     end
   end
 
-  describe '#viewDidLoad' do
-    # subview tags are self.view 0, label 1, box 2 and attachmentPoint 3
+  describe 'PendulumViewController #viewDidLoad' do
     it 'should assign a UILabel as a controller Subview. ' do
       controller.view.subviews[1].class.should.equal UILabel
       controller.view.subviews[1].object_id.should.equal controller.instance_variable_get('@label').object_id
@@ -89,11 +88,9 @@ state from UIGestureRecognizerStatePossible to UIGestureRecognizerStateEnded." d
     it 'should respond to #end_dragging_weight_with_velocity' do
       velocity = CGPointMake(-7.0, 11.0)
       controller.pendulum_behavior.end_dragging_weight_with_velocity(velocity)
+      # predicated on     magnitude /= 500 in class PendulumBehaviour
       controller.pendulum_behavior.pushBehavior.magnitude.should.be.close(0.026, 0.001)
       controller.pendulum_behavior.pushBehavior.angle.should.be.close( 2.137, 0.001)
     end
-
-
   end
-
 end

@@ -10,7 +10,7 @@ describe AttachmentsView do
     @help_methods.window_cleanup(window, controller)
   end
 
-  describe '#init' do
+  describe 'AttachmentsView #init' do
 
     it 'should create seven attr_accessors :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
       @help_methods.do_methods_respond(controller, :collision_behavior, :collision_behavior=,
@@ -21,13 +21,13 @@ describe AttachmentsView do
   end
 
 
-  describe '#loadView' do
+  describe 'AttachmentsView #loadView' do
     it 'creates a DecorationView root view' do
       controller.view.class.should.equal DecorationView
     end
   end
 
-  describe '#viewDidLoad' do
+  describe 'AttachmentsView #viewDidLoad' do
 
    it 'added four subviews' do
       controller.self.view.subviews.count.should.equal 4

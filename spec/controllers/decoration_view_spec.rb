@@ -5,7 +5,7 @@ describe DecorationView do
     @help_methods = SpecHelper.create_help_methods
   end
 
-  describe '#init' do
+  describe 'DecorationView #init' do
 
     it 'should create a UIView object' do
       @decoration_view.superclass.should.equal UIView
@@ -33,7 +33,7 @@ describe DecorationView do
 
   # dealloc method is tested by the attachments_view_controller_spec.rb test file
 
-  describe '#drawMagnitudeVectorWithLength with param forLimitedTime == false' do
+  describe 'DecorationView #drawMagnitudeVectorWithLength with param forLimitedTime == false' do
     before do
       @obj = @decoration_view.drawMagnitudeVectorWithLength(100.0, angle: 0.0, color: UIColor.redColor, forLimitedTime: false)
     end
@@ -44,7 +44,7 @@ describe DecorationView do
     end
   end
 
-  describe '#drawMagnitudeVectorWithLength with param forLimitedTime == true' do
+  describe 'DecorationView #drawMagnitudeVectorWithLength with param forLimitedTime == true' do
     before do
       @obj = @decoration_view.drawMagnitudeVectorWithLength(100.0, angle: 0.0, color: UIColor.redColor, forLimitedTime: true)
     end
@@ -55,7 +55,7 @@ describe DecorationView do
     end
   end
 
-  describe '#drawMagnitudeVectorWithLength does a transform rotate' do
+  describe 'DecorationView #drawMagnitudeVectorWithLength does a transform rotate' do
     it 'It should do a transform rotate of the arrow_view ' do
       should.not.raise(ArgumentError) {@decoration_view.drawMagnitudeVectorWithLength(100.0, angle: 1.0, color: UIColor.redColor, forLimitedTime: true)}
       should.raise(ArgumentError) {@decoration_view.drawMagnitudeVectorWithLength(100.0, angle: 'rotate', color: UIColor.redColor, forLimitedTime: true)}
@@ -68,7 +68,7 @@ describe DecorationView do
     end
   end
 
-  describe '#layoutSubviews' do
+  describe 'DecorationView #layoutSubviews' do
     before do
       @decoration_view.layoutSubviews
       @attachment_view_controller = AttachmentsView.alloc.init
@@ -110,7 +110,7 @@ describe DecorationView do
 
   end
 
-  describe '#create_attachment_points' do
+  describe 'DecorationView #create_attachment_points' do
 
     before do
       @attachment_view_controller = AttachmentsView.alloc.init
@@ -127,7 +127,7 @@ describe DecorationView do
     end
   end
 
-  describe '#calc_distance_and_angle' do
+  describe 'DecorationView #calc_distance_and_angle' do
     before do
       @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@decoration_view)
     end
@@ -146,7 +146,7 @@ describe DecorationView do
   end
 
 
-  describe '#number_of_required_dashes' do
+  describe 'DecorationView #number_of_required_dashes' do
     before do
       @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@decoration_view)
       @required_dashes = @decoration_view.send(:number_of_required_dashes, @calc_distance_and_angle[:distance])
@@ -157,7 +157,7 @@ describe DecorationView do
     end
   end
 
-  describe '#dash_spacing' do
+  describe 'DecorationView #dash_spacing' do
     before do
       @calc_distance_and_angle = @help_methods.calc_distance_and_angle(@decoration_view)
       @required_dashes = @decoration_view.send(:number_of_required_dashes, @calc_distance_and_angle[:distance])
@@ -167,7 +167,7 @@ describe DecorationView do
     end
   end
 
-  describe '#hidden_dashes' do
+  describe 'DecorationView #hidden_dashes' do
     before do
       @decoration_view.send(:hide_dashes, 2, 4)
     end

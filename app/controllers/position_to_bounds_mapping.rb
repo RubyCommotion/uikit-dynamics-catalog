@@ -1,7 +1,5 @@
 class PositionToBoundsMapping < NSObject
 
-attr_accessor :target
-
 def initWithTarget(target)
   init
   self.target = target
@@ -55,4 +53,8 @@ end
     # Pass through
     self.target.transform = transform
   end
+
+  protected
+  attr_accessor :target
+
 end
