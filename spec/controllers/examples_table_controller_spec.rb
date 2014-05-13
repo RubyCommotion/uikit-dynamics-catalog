@@ -10,7 +10,7 @@ describe ExamplesTableController do
     @help_method.window_cleanup(window, controller)
   end
 
-  describe '#viewDidLoad' do
+  describe 'ExamplesTableController #viewDidLoad' do
 
     it 'sets the title' do
       controller.title.should.equal 'UIKit Dynamics Catalog Examples'
@@ -25,20 +25,20 @@ describe ExamplesTableController do
     end
   end
 
-  describe '#tableView cellForRowAtIndexPath' do
+  describe 'ExamplesTableController #tableView cellForRowAtIndexPath' do
     it 'returns a cell' do
       index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
       controller.tableView(controller.tableView, cellForRowAtIndexPath: index_path).should.be.kind_of UITableViewCell
     end
   end
 
-  describe '#tableView numberOfRowsInSection' do
+  describe 'ExamplesTableController #tableView numberOfRowsInSection' do
     it 'returns an integer' do
       controller.tableView(controller.tableView, numberOfRowsInSection: 1).should.be.kind_of Integer
     end
   end
 
-  describe 'data' do
+  describe 'ExamplesTableController data' do
     it 'returns an array' do
       controller.data.should.be.kind_of Array
     end

@@ -11,7 +11,7 @@ describe ItemPropertiesViewController do
   end
 
 
-  describe '#init' do
+  describe 'ItemPropertiesViewController #init' do
 
     it 'should create four attr_accessors :box_one, :box_two, :box_two_property, :box_one_property' do
       @help_methods.do_methods_respond(controller, :box_one, :box_one=, :box_two, :box_two=,
@@ -21,7 +21,7 @@ describe ItemPropertiesViewController do
     end
   end
 
-  describe '#viewDidLoad' do
+  describe 'ItemPropertiesViewController #viewDidLoad' do
 
     it 'should assign box_one imageImageView to the first subview of the controller\'s view. ' do
       controller.view.subviews[0].object_id.should.equal controller.box_one.object_id
@@ -52,13 +52,13 @@ describe ItemPropertiesViewController do
 
   end
 
-  describe '#viewDidAppear' do
+  describe 'ItemPropertiesViewController #viewDidAppear' do
     it 'should add four behaviours to the animator.' do
       controller.animator.behaviors.size.should.equal 4
     end
   end
 
-  describe "#replay_action" do
+  describe "ItemPropertiesViewController #replay_action" do
     it 'should reset the box1 and box 2 UIImageViews\' x origin coordinates to be at the top of the view' do
       controller.send(:replay_action)
       controller.box_one.center.x.should.equal 90
@@ -66,7 +66,7 @@ describe ItemPropertiesViewController do
     end
   end
 
-  describe "#replay_action" do
+  describe "ItemPropertiesViewController #replay_action" do
     it 'should fail to with no a NoMethodError for method addLinearVelocity when box_one_property or box_two_property set to a string object.' do
       tmp_box_one_property = controller.box_one_property
       controller.box_one_property = 'string not a UIDynamicItemBehavior'

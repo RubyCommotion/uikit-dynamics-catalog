@@ -6,13 +6,13 @@ describe GravityViewController do
     SpecHelper.create_help_methods.window_cleanup(window, controller)
   end
 
-  describe '#viewDidLoad' do
+  describe 'GravityViewController #viewDidLoad' do
     it 'created an ImageView subview: box' do
       controller.box.class.should.equal UIImageView
     end
   end
 
-  describe '#viewDidAppear' do
+  describe 'GravityViewController #viewDidAppear' do
     it 'adds a behaviour to the animator' do
       controller.animator.behaviors.count.should.equal 1
     end

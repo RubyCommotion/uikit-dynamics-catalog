@@ -22,27 +22,26 @@ class CustomDynamicItemViewController < BaseViewController
   end
 
 
-  def button_action(sender)
-    # Reset the buttons bounds to their initial state.  See the comment in viewDidLoad.
-
-    button_bounds_dynamic_item = create_bb_dynamic_item(sender)
-
-    # Create an attachment between the button_bounds_dynamic_item and the initial
-    # value of the button's bounds.
-
-    create_attachment_behaviour(button_bounds_dynamic_item)
-    create_push_behaviour(button_bounds_dynamic_item)
-  end
-
   protected
   attr_accessor :button_bounds
 
   private
 
+  def button_action(sender)
+    # Reset the buttons bounds to their initial state.  See the comment in viewDidLoad.
+    button_bounds_dynamic_item = create_bb_dynamic_item(sender)
+
+    # Create an attachment between the button_bounds_dynamic_item and the initial
+    # value of the button's bounds.
+    create_attachment_behaviour(button_bounds_dynamic_item)
+    create_push_behaviour(button_bounds_dynamic_item)
+    button_bounds_dynamic_item
+  end
+
   def create_bb_dynamic_item(sender)
     sender.bounds = button_bounds
     # UIDynamicAnimator instances are relatively cheap to create.
-    # APLPositionToBoundsMapping maps the center of an id<ResizableDynamicItem>
+    # PositionToBoundsMapping maps the center of an id<ResizableDynamicItem>
     # (UIDynamicItem with mutable bounds) to its bounds.  As dynamics modifies
     # the center.x, the changes are forwarded to the bounds.size.width.
     # Similarly, as dynamics modifies the center.y, the changes are forwarded

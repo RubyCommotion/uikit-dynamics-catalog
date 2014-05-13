@@ -21,13 +21,13 @@ vcs.each do |vc|
       end
     end
 
-    describe "\n#loadView" do
+    describe "#{vc} #loadView" do
       it 'should create a DecorationView root view' do
         controller.view.class.should == DecorationView
       end
     end
 
-    describe "\n#viewDidLoad" do
+    describe "#{vc}  #viewDidLoad" do
 
       it 'should create root view gesture recognizer(s)' do
         controller.view.gestureRecognizers.count.should != 0
@@ -69,7 +69,7 @@ vcs.each do |vc|
     end
 
 
-    describe "\n#viewDidAppear" do
+    describe "#{vc} #viewDidAppear" do
 
       it 'should create an animator' do
         controller.animator.class.should == UIDynamicAnimator
@@ -91,7 +91,7 @@ vcs.each do |vc|
       class_name = InstantaneousPushViewController.to_s
     end
 
-    describe "\n##{class_name}'s #viewDidAppear" do
+    describe "#{class_name}'s #viewDidAppear" do
 
       it 'should set the initial value of the push angle and distance to 0.0' do
         controller.push_behavior.angle.should == 0.0
@@ -99,7 +99,7 @@ vcs.each do |vc|
       end
     end
 
-    describe "\n##{class_name}'s gesture recognizer" do
+    describe "#{class_name}'s gesture recognizer" do
       before do
         tap('Is a box', at: :top_left, :times => 1, :touches => 1)
       end

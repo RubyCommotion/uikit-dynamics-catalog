@@ -6,13 +6,13 @@ describe CollisionViewController do
     SpecHelper.create_help_methods.window_cleanup(window, controller)
   end
 
-  describe "#viewDidLoad" do
+  describe "CollisionViewController #viewDidLoad" do
     it "adds a box to the subview" do
       controller.view.subviews.count.should.equal 1
     end
   end
 
-  describe "#viewDidAppear" do
+  describe "CollisionViewController #viewDidAppear" do
 
     it "add two behaviors" do
       controller.animator.behaviors.count.should.equal 2
