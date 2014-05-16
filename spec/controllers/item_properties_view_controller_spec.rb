@@ -6,11 +6,6 @@ describe ItemPropertiesViewController do
 
   tests ItemPropertiesViewController
 
-  after do
-    @help_methods.window_cleanup(window, controller)
-  end
-
-
   describe 'ItemPropertiesViewController #init' do
 
     it 'should create four attr_accessors :box_one, :box_two, :box_two_property, :box_one_property' do

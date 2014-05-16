@@ -6,10 +6,6 @@ describe ExamplesTableController do
 
   tests ExamplesTableController
 
-  after do
-    @help_method.window_cleanup(window, controller)
-  end
-
   describe 'ExamplesTableController #viewDidLoad' do
 
     it 'sets the title' do

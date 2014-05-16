@@ -61,11 +61,4 @@ class SpecHelper
       end
   controller_test_results
   end
-
-
-  def window_cleanup(window, controller)
-    window = nil
-    controller = nil
-  end
-
 end

@@ -6,10 +6,6 @@ describe AttachmentsView do
 
   tests AttachmentsView
 
-  after do
-    @help_methods.window_cleanup(window, controller)
-  end
-
   describe 'AttachmentsView #init' do
 
     it 'should create seven attr_accessors :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
@@ -30,8 +26,8 @@ describe AttachmentsView do
   describe 'AttachmentsView #viewDidLoad' do
 
    it 'added four subviews' do
-      controller.self.view.subviews.count.should.equal 4
-    end
+     controller.self.view.subviews.count.should.equal 4
+   end
 
     it 'created an ImageView subview: square1' do
       controller.sq1_attachment_image_view.class.should.equal UIImageView
@@ -41,7 +37,7 @@ describe AttachmentsView do
       controller.square1.subviews.count.should.equal 2
     end
 
-    it 'created an ImageView subview: @box1' do
+    it 'created an ImageView subview box1' do
       controller.box1.class.should.equal UIImageView
     end
 
@@ -74,6 +70,22 @@ describe AttachmentsView do
     it 'creates an observer for DecorationView\'s attached_view object\'s centre method' do
       should.not.raise(NSRangeException) {controller.view.attached_view.removeObserver(controller.view, forKeyPath: 'center') }
       should.raise(NSRangeException) {controller.view.attached_view.removeObserver(controller.view, forKeyPath: 'not_center') }
+    end
+  end
+
+  describe 'AttachmentsView UIPanGestureRecognizer action method #handle_attachment_gesture.' do
+    before do
+    end
+
+    it 'should set the attachment_behavior\'s anchorPoint.' do
+      gesture = controller.view.gestureRecognizers[0]
+      controller.send(:handle_attachment_gesture, gesture)
+      (controller.attachment_behavior.anchorPoint.x == 0.0 && controller.attachment_behavior.anchorPoint.y == 0.0).should.equal true
+    end
+
+    it 'should set the attachment_view\'s center to be equal to the anchorPoint center.' do
+      (controller.attachment_view.center.x == controller.attachment_behavior.anchorPoint.x).should.equal true
+      (controller.attachment_view.center.y == controller.attachment_behavior.anchorPoint.y).should.equal true
     end
   end
 end
