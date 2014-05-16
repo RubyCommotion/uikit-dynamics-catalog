@@ -5,10 +5,6 @@ describe PendulumViewController do
 
   tests PendulumViewController
 
-  after do
-    @help_methods.window_cleanup(window, controller)
-  end
-
   describe 'PendulumViewController #init' do
     it 'should create attr_accessors :attachmentPoint, :pendulumBehavior' do
       @help_methods.do_methods_respond(controller, :attachment_point, :attachment_point=, :pendulum_behavior, :pendulum_behavior=).
@@ -18,12 +14,10 @@ describe PendulumViewController do
 
   describe 'PendulumViewController #viewDidLoad' do
     it 'should assign a UILabel as a controller Subview. ' do
-      controller.view.subviews[1].class.should.equal UILabel
       controller.view.subviews[1].object_id.should.equal controller.instance_variable_get('@label').object_id
     end
 
-    it 'should assign box imageImageView to the second subview of the controller\'s view. ' do
-      controller.view.subviews[2].class.should.equal NSKVONotifying_UIImageView
+    it 'should assign box imageImageView to the third subview of the controller\'s view. ' do
       controller.view.subviews[2].object_id.should.equal controller.box.object_id
     end
 

@@ -1,9 +1,5 @@
 describe BaseViewController do
 
-  after do
-    SpecHelper.create_help_methods.window_cleanup(window, controller)
-  end
-
   tests BaseViewController
 
   describe 'BaseViewController #new_box' do

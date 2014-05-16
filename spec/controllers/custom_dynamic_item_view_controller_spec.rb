@@ -6,10 +6,6 @@ describe CustomDynamicItemViewController do
 
   tests CustomDynamicItemViewController
 
-  after do
-    @help_methods.window_cleanup(window, controller)
-  end
-
   it 'should create an attr_accessor button_bounds' do
     @help_methods.do_methods_respond(controller, :button_bounds, :button_bounds=).should.equal 'All Methods responded'
   end
