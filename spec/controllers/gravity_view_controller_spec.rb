@@ -3,8 +3,9 @@ describe GravityViewController do
   tests GravityViewController
 
   describe 'GravityViewController #viewDidLoad' do
-    it 'created an ImageView subview: box' do
-      controller.box.class.should.equal UIImageView
+    it 'created an ImageView controller subview: box' do
+      controller.view.subviews[0].accessibilityLabel.should.equal 'Box'
+      view('Box').class.should.equal UIImageView
     end
   end
 

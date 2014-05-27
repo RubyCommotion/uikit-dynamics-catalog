@@ -5,6 +5,10 @@ describe PendulumViewController do
 
   tests PendulumViewController
 
+  def controller
+    @controller ||= PendulumViewController.alloc.init(DecorationView.alloc.init)
+  end
+
   describe 'PendulumViewController #init' do
     it 'should create attr_accessors :attachmentPoint, :pendulumBehavior' do
       @help_methods.do_methods_respond(controller, :attachment_point, :attachment_point=, :pendulum_behavior, :pendulum_behavior=).

@@ -1,7 +1,14 @@
-class AttachmentsView < BaseViewController
+class AttachmentsView < UIViewController
+  include BaseModule
+
+  def init(decorator_view)
+    @decorator_view = decorator_view
+    self
+  end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
+    self.view.setAccessibilityLabel('Controller View')
   end
 
   def viewDidLoad
@@ -23,8 +30,7 @@ class AttachmentsView < BaseViewController
   def create_subviews
     create_square1_view
     self.view.addSubview(square1)
-    label = create_instructions_label
-    self.view.addSubview(label)
+    create_instructions_label
     # second attachment point view that is used to drag box1 via its connected attachment point
     create_attachment_view
     self.view.addSubview(attachment_view)
@@ -44,7 +50,6 @@ class AttachmentsView < BaseViewController
     attachment_point = UIOffsetMake(-25.0, -25.0)
     self.attachment_behavior = UIAttachmentBehavior.alloc.initWithItem(square1, offsetFromCenter: attachment_point, attachedToAnchor: square_center_point)
     animator.addBehavior(attachment_behavior)
-
   end
 
   def handle_attachment_gesture(gesture)
@@ -64,27 +69,33 @@ class AttachmentsView < BaseViewController
       sq1_attachment_image_view.tintColor = UIColor.blueColor
       sq1_attachment_image_view.image = sq1_attachment_image_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
       sq1.addSubview(sq1_attachment_image_view)
+      sq1.setAccessibilityLabel('Square')
+      sq1_attachment_image_view.setAccessibilityLabel('Square Attachment View')
+      box1.setAccessibilityLabel('Box')
+
     end
   end
 
   def create_instructions_label
-    @label ||= UILabel.alloc.initWithFrame([[20, 504], [280, 44]]).tap do |lbl|
-      lbl.enabled = false
-      lbl.contentMode = UIViewContentModeLeft
-      lbl.clipsToBounds = true
-      lbl.text = 'Drag red circle to move the square.'
-      lbl.adjustsFontSizeToFitWidth = true
-      #lbl.textColor = UIColor.darkTextColor
-      lbl.font = UIFont.fontWithName('Chalkduster', size:15)
+      @label ||= UILabel.alloc.initWithFrame([[20, 439], [280, 21]]).tap do |lbl|
+        lbl.enabled = false
+        lbl.contentMode = UIViewContentModeLeft
+        lbl.clipsToBounds = true
+        lbl.text = 'Drag red circle to move the square.'
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.font = UIFont.fontWithName('Chalkduster', size:15)
+      end
+      self.view.addSubview(@label)
     end
-  end
 
   def create_attachment_view
     attachment_point_mask_image = UIImage.imageNamed('attachment_point_mask')
-    @attachment_view ||=  UIImageView.alloc.initWithFrame([[12, 76], [attachment_point_mask_image.size.width, attachment_point_mask_image.size.height]]).tap do |att_vw|
+    @attachment_view ||=  UIImageView.alloc.initWithFrame([[12, 76], [attachment_point_mask_image.size.width, attachment_point_mask_image.size.height]]).
+                          tap do |att_vw|
       att_vw.image = attachment_point_mask_image
       att_vw.tintColor = UIColor.redColor
       att_vw.image = att_vw.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+      att_vw.setAccessibilityLabel('Attachment View')
     end
   end
 end

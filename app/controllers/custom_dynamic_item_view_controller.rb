@@ -1,7 +1,13 @@
-class CustomDynamicItemViewController < BaseViewController
+class CustomDynamicItemViewController < UIViewController
+  include BaseModule
+
+  def init(decorator_view)
+    @decorator_view = decorator_view
+    self
+  end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
   end
 
   def viewDidLoad
@@ -73,6 +79,7 @@ class CustomDynamicItemViewController < BaseViewController
         button.addTarget( self,
                           action: 'button_action:',
                           forControlEvents: UIControlEventTouchUpInside )
+        button.setAccessibilityLabel('Tap Me')
       end
   end
 end

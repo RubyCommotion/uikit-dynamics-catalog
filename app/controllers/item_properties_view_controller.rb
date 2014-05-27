@@ -1,11 +1,14 @@
-class ItemPropertiesViewController < BaseViewController
+class ItemPropertiesViewController < UIViewController
+  include BaseModule
 
   def viewDidLoad
     super
     self.navigationItem.rightBarButtonItem = new_replay_button
     self.box_one = new_box(40, 100)
+    self.box_one.accessibilityLabel = 'Box One'
     self.view.addSubview(box_one)
     self.box_two = new_box(180, 100)
+    self.box_two.accessibilityLabel = 'Box Two'
     self.view.addSubview(box_two)
   end
 

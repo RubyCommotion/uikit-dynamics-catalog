@@ -1,4 +1,5 @@
 describe CustomDynamicItemViewController do
+
   before do
     @help_methods = SpecHelper.create_help_methods
     @button = controller.send(:create_button)
@@ -6,13 +7,18 @@ describe CustomDynamicItemViewController do
 
   tests CustomDynamicItemViewController
 
+  def controller
+    @controller ||= CustomDynamicItemViewController.alloc.init(DecorationView.alloc.init)
+  end
+
+
   it 'should create an attr_accessor button_bounds' do
     @help_methods.do_methods_respond(controller, :button_bounds, :button_bounds=).should.equal 'All Methods responded'
   end
 
   describe 'CustomDynamicItemViewController #loadView' do
 
-    it 'should create a DecorationView root view' do
+    it 'should create a DecorationView controller view' do
       controller.view.class.should.equal DecorationView
     end
   end
@@ -20,11 +26,11 @@ describe CustomDynamicItemViewController do
   describe 'CustomDynamicItemViewController #viewDidLoad' do
 
     it 'should create a button' do
-     @button.class.should.equal UIButton
+     view('Tap Me').class.should.equal UIButton
     end
 
-    it 'should add the button to view as a subview'do
-    controller.view.subviews[1].class.should.equal UIButton
+    it 'should add the button to view as a controller view subview'do
+    controller.view.subviews[1].accessibilityLabel.should.equal 'Tap Me'
     end
 
     it 'should have the button fill its content rectangle horizontally and vertically.'do
@@ -49,8 +55,8 @@ describe CustomDynamicItemViewController do
     end
 
     it 'should have a UIAttachmentBehavior with an anchorPoint that is equal to the button\'s centre' do
-      controller.animator.behaviors[0].anchorPoint.x.round.should.equal @button.center.x.round # take care of float rounding issues with to_i
-      controller.animator.behaviors[0].anchorPoint.y.round.should.equal @button.center.y.round # take care of float rounding issues with to_i
+      controller.animator.behaviors[0].anchorPoint.x.round.should.equal @button.center.x.round # take care of any float rounding issues
+      controller.animator.behaviors[0].anchorPoint.y.round.should.equal @button.center.y.round
     end
 
     it 'should have a UIAttachmentBehavior with a frequency of 2.0 and damping of 0.3.'do
@@ -75,10 +81,12 @@ describe CustomDynamicItemViewController do
 
   describe 'PositionToBoundsMapping (a protocol class) is accessed by CustomDynamicItemViewController via its instance object button_bounds_dynamic_item' do
 
+    #TODO can this be refactored?
     it 'should have been used to create an instance of itself by CustomDynamicItemViewController.'do
-      controller.send(:create_bb_dynamic_item, @button).class.should.equal PositionToBoundsMapping # controller is CustomDynamicItemViewController
-      @button.center.x.should !=  controller.send(:create_bb_dynamic_item, @button).center.x
-      @button.center.y.should !=  controller.send(:create_bb_dynamic_item, @button).center.y
+      pos_to_bounds_mapping = controller.send(:create_bb_dynamic_item, @button)
+      pos_to_bounds_mapping.class.should.equal BaseModule::PositionToBoundsMapping
+      @button.center.x.should !=  pos_to_bounds_mapping.center.x
+      @button.center.y.should !=  pos_to_bounds_mapping.center.y
     end
 
     it 'should have an attr_accessor :target and the protocol methods bounds, setBounds, center, setCenter, transform, setTransform ' do
@@ -118,9 +126,5 @@ describe CustomDynamicItemViewController do
       (set_transform_snapshot.b > -10.0 && set_transform_snapshot.b <= 0.0).should.equal true
       (set_transform_snapshot.c >= 0.0 && set_transform_snapshot.c <= 10.0).should.equal true
     end
-
-
   end
-
-
 end
