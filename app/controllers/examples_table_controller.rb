@@ -1,4 +1,9 @@
 class ExamplesTableController < UITableViewController
+
+  def init
+    self
+  end
+
   def viewDidLoad
     super
     self.title = 'UIKit Dynamics Catalog Examples'
@@ -20,49 +25,64 @@ class ExamplesTableController < UITableViewController
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    controller = data[indexPath.row][:controller].alloc.init
+    # each controller must have its own unique decoration view object
+    if data[indexPath.row][:inject_decoration_view]
+      controller = data[indexPath.row][:controller].alloc.init(DecorationView.alloc.init)
+    else
+      controller = data[indexPath.row][:controller].alloc.init
+    end
     navigationController.pushViewController(controller, animated: true)
   end
 
   def data
     [
       {title: 'Attachments + Collision',
-        controller: AttachmentsView
+        controller: AttachmentsView,
+        inject_decoration_view: true
       },
       {
         title: 'Continuous Push + Collision',
-        controller: ContinuousPushViewController
+        controller: ContinuousPushViewController,
+        inject_decoration_view: true
       },
       {title: 'Custom Dynamic Item',
-        controller: CustomDynamicItemViewController
+        controller: CustomDynamicItemViewController,
+        inject_decoration_view: true
       },
       {
         title: 'Gravity',
-        controller: GravityViewController
+        controller: GravityViewController,
+        inject_decoration_view: false
       },
       {
         title: 'Gravity + Collision',
-        controller: CollisionViewController
+        controller: CollisionViewController,
+        inject_decoration_view: false
       },
       {
         title: "Gravity Spring",
-        controller: GravitySpringController
+        controller: GravitySpringController,
+        inject_decoration_view: true
       },
       {
         title: 'Instantaneous Push + Collision',
-        controller: InstantaneousPushViewController
+        controller: InstantaneousPushViewController,
+        inject_decoration_view: true
       },
       {
         title: 'Item Properties',
-        controller: ItemPropertiesViewController
+        controller: ItemPropertiesViewController,
+        inject_decoration_view: false
       },
       {
         title: 'Pendulum (Composite Behavior)',
-        controller: PendulumViewController
+        controller: PendulumViewController,
+        inject_decoration_view: true
       },
       {
         title: 'Snap',
-        controller: SnapViewController
+        controller: SnapViewController,
+        inject_decoration_view: false
       }
     ]
   end

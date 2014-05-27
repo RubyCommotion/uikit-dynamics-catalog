@@ -1,12 +1,18 @@
-class PendulumViewController < BaseViewController
+class PendulumViewController < UIViewController
+  include BaseModule
+
+  def init(decorator_view)
+    @decorator_view = decorator_view
+    self
+  end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
   end
 
   def viewDidLoad
     super
-    view.addSubview(create_instructions_label)
+    create_instructions_label
     create_box_image_view_subview
     create_attachment_point_image_view_subview
 
@@ -62,13 +68,16 @@ class PendulumViewController < BaseViewController
   end
 
   def create_instructions_label
-    @label ||= UILabel.alloc.initWithFrame([[20, 504], [280, 44]]).tap do |lbl|
-      lbl.enabled = false
-      lbl.contentMode = UIViewContentModeLeft
-      lbl.clipsToBounds = true
-      lbl.text = 'Drag box to swing pendulum.'
-      lbl.adjustsFontSizeToFitWidth = true
-      lbl.font = UIFont.fontWithName('Chalkduster', size:15)
+      @label ||= UILabel.alloc.initWithFrame([[20, 439], [280, 21]]).tap do |lbl|
+        lbl.enabled = false
+        lbl.contentMode = UIViewContentModeLeft
+        lbl.clipsToBounds = true
+        lbl.text = 'Drag box to swing pendulum.'
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.font = UIFont.fontWithName('Chalkduster', size:15)
+      end
+      self.view.addSubview(@label)
     end
-  end
+
+
 end

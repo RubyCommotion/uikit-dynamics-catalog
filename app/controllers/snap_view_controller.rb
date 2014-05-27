@@ -1,4 +1,5 @@
-class SnapViewController < BaseViewController
+class SnapViewController < UIViewController
+  include BaseModule
 
   def viewDidLoad
     super
@@ -31,6 +32,4 @@ class SnapViewController < BaseViewController
       lbl.font = UIFont.fontWithName('Chalkduster', size:15)
     end
   end
-
-
 end

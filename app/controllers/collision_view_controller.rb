@@ -1,7 +1,10 @@
-class CollisionViewController < BaseViewController
+class CollisionViewController < UIViewController
+  include BaseModule
+
   def viewDidLoad
     super
     self.box = new_box(100, 100)
+    box.setAccessibilityLabel('Box')
     self.view.addSubview(box)
   end
 

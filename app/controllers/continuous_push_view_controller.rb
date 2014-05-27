@@ -1,7 +1,13 @@
-class ContinuousPushViewController < BaseViewController
+class ContinuousPushViewController < UIViewController
+  include BaseModule
+
+  def init(decorator_view)
+    @decorator_view = decorator_view
+    self
+  end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
     self.view.accessibilityLabel = 'This is main view'
   end
 
@@ -64,9 +70,9 @@ class ContinuousPushViewController < BaseViewController
     @square1 ||= UIView.alloc.initWithFrame([[110, 98], [100, 100]]).tap do |sq1_view|
       sq1_view.userInteractionEnabled = false
       box1_view = new_box(0,0)
-      box1_view.accessibilityLabel = 'Is a box'
+      box1_view.setAccessibilityLabel('Box')
       sq1_view.addSubview(box1_view)
-      sq1_view.accessibilityLabel = 'Square contains a box'
+      sq1_view.setAccessibilityLabel('Square')
       self.view.addSubview(sq1_view)
     end
   end
@@ -76,7 +82,7 @@ class ContinuousPushViewController < BaseViewController
     origin_image = UIImage.imageNamed('origin')
     origin_view = UIImageView.alloc.initWithFrame([[155, 235], [10, 10]])
     origin_view.image = origin_image
-    origin_view.accessibilityLabel = 'Is an origin'
+    origin_view.setAccessibilityLabel('Origin')
     self.view.addSubview(origin_view)
   end
 

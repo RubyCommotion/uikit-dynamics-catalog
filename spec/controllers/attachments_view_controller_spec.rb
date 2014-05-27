@@ -1,15 +1,15 @@
 describe AttachmentsView do
 
-  before do
-    @help_methods = SpecHelper.create_help_methods
-  end
-
   tests AttachmentsView
+
+  def controller
+    @controller ||= AttachmentsView.alloc.init(DecorationView.alloc.init)
+  end
 
   describe 'AttachmentsView #init' do
 
-    it 'should create seven attr_accessors :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
-      @help_methods.do_methods_respond(controller, :collision_behavior, :collision_behavior=,
+    it 'should create five attr_accessors :attachment_behavior, :square1, :box1, :sq1_attachment_image_view, :attachment_view ' do
+      SpecHelper.create_help_methods.do_methods_respond(controller, :collision_behavior, :collision_behavior=,
                                    :attachment_behavior, :attachment_behavior=, :square1, :square1=,
                                    :box1, :box1=, :sq1_attachment_image_view, :sq1_attachment_image_view=, :attachment_view, :attachment_view=).
                                    should.equal 'All Methods responded'
@@ -18,49 +18,68 @@ describe AttachmentsView do
 
 
   describe 'AttachmentsView #loadView' do
-    it 'creates a DecorationView root view' do
+    it 'creates a DecorationView controller view' do
       controller.view.class.should.equal DecorationView
     end
   end
 
   describe 'AttachmentsView #viewDidLoad' do
 
-   it 'added four subviews' do
-     controller.self.view.subviews.count.should.equal 4
-   end
+    it 'added four subviews to the controller view.' do
+       controller.view.subviews.count.should.equal 4
+    end
 
-    it 'created an ImageView subview: square1' do
-      controller.sq1_attachment_image_view.class.should.equal UIImageView
+    it 'added an arrow UIImageView as a controller subview' do
+      view('Controller View').subviews[0].accessibilityLabel.should.equal 'Arrow'
+      view('Controller View').subviews[0].class.should.equal UIImageView
+    end
+
+    it 'added square1 UIView as a controller subview' do
+      view('Controller View').subviews[1].accessibilityLabel.should.equal 'Square'
+      view('Controller View').subviews[1].class.should.equal NSKVONotifying_UIView
     end
 
     it 'added two subviews to the square1 ImageView ' do
-      controller.square1.subviews.count.should.equal 2
+      view('Square').subviews.count.should.equal 2
     end
 
-    it 'created an ImageView subview box1' do
-      controller.box1.class.should.equal UIImageView
+    it 'added an UIImageView subview box1 to square1' do
+      view('Square').subviews[0].accessibilityLabel.should.equal 'Box'
+      view('Square').subviews[0].class.should.equal UIImageView
     end
 
-    it 'created a UILabel subview' do
-      # use to send to access private method
-      controller.send(:create_instructions_label).class.should.equal UILabel
+    it 'added an UIImageView subview sq1_attachment_image_view to square1' do
+      view('Square').subviews[1].accessibilityLabel.should.equal 'Square Attachment View'
+      view('Square').subviews[1].class.should.equal UIImageView
     end
 
-    it 'added a panGestureRecognizer for the root view' do
-      controller.self.view.gestureRecognizers.count.should.equal 1
+    it 'added UILabel as a controller subview' do
+      view('Controller View').subviews[2].accessibilityLabel.should.equal 'Drag red circle to move the square.'
+      view('Controller View').subviews[2].class.should.equal UILabel
     end
 
-    it 'added two behaviors' do
+    it 'added attachment_view UIImageView as a controller subview' do
+      view('Controller View').subviews[3].accessibilityLabel.should.equal 'Attachment View'
+      view('Controller View').subviews[3].class.should.equal NSKVONotifying_UIImageView
+    end
+
+    it 'added a panGestureRecognizer for the controller view' do
+      controller.view.gestureRecognizers.count.should.equal 1
+      controller.view.gestureRecognizers[0].class.should == UIPanGestureRecognizer
+    end
+
+    it 'should create an animator' do
+      controller.animator.class.should == UIDynamicAnimator
+    end
+
+    it 'added two behaviors to the controller view' do
       controller.animator.behaviors.count.should.equal 2
+      controller.animator.behaviors[0].class.should == UICollisionBehavior
+      controller.animator.behaviors[0].collisionMode.should == UICollisionBehaviorModeEverything
+      controller.animator.behaviors[1].class.should == UIAttachmentBehavior
+      controller.animator.behaviors[1].items.count.should == 1
     end
 
-    it 'added a collision behaviour with mode UICollisionBehaviorModeEverything' do
-      controller.collision_behavior.collisionMode.should.equal(-1)
-    end
-
-    it 'added an attachment behaviour with one item' do
-      controller.attachment_behavior.items.count.should.equal 1
-    end
 
     it 'creates an observer for DecorationView\'s attachment_point_view object\'s centre method' do
       should.not.raise(NSRangeException) {controller.view.attachment_point_view.removeObserver(controller.view, forKeyPath: 'center') }
@@ -74,10 +93,9 @@ describe AttachmentsView do
   end
 
   describe 'AttachmentsView UIPanGestureRecognizer action method #handle_attachment_gesture.' do
-    before do
-    end
 
     it 'should set the attachment_behavior\'s anchorPoint.' do
+      (controller.attachment_behavior.anchorPoint.x == 0.0 && controller.attachment_behavior.anchorPoint.y == 0.0).should.equal false
       gesture = controller.view.gestureRecognizers[0]
       controller.send(:handle_attachment_gesture, gesture)
       (controller.attachment_behavior.anchorPoint.x == 0.0 && controller.attachment_behavior.anchorPoint.y == 0.0).should.equal true

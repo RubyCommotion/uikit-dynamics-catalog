@@ -5,7 +5,7 @@ class SpecHelper
   end
 
   def calc_distance_and_angle(view)
-    attachment_view_controller = AttachmentsView.alloc.init
+    attachment_view_controller = AttachmentsView.alloc.init(DecorationView.alloc.init)
     attachment_view_controller.view.trackAndDrawAttachmentFromView(attachment_view_controller.attachment_view,
                                                                     toView: attachment_view_controller.square1,
                                                                     withAttachmentOffset: CGPointMake(-25.0, -25.0))

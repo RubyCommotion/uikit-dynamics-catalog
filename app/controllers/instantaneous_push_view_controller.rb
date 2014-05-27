@@ -1,7 +1,13 @@
-class InstantaneousPushViewController  < BaseViewController
+class InstantaneousPushViewController  < UIViewController
+  include BaseModule
+
+  def init(decorator_view)
+    @decorator_view = decorator_view
+    self
+  end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
     self.view.accessibilityLabel = 'This is main view'
   end
 
@@ -57,9 +63,7 @@ class InstantaneousPushViewController  < BaseViewController
   private
 
   def create_gesture_recognizer
-    pan_gesture_recognizer = UIPanGestureRecognizer.alloc.initWithTarget(self, action: 'handle_instantaneous_push_gesture:')
     tap_gesture_recognizer = UITapGestureRecognizer.alloc.initWithTarget(self, action: 'handle_instantaneous_push_gesture:')
-    self.view.addGestureRecognizer(pan_gesture_recognizer)
     self.view.addGestureRecognizer(tap_gesture_recognizer)
   end
 
@@ -67,9 +71,9 @@ class InstantaneousPushViewController  < BaseViewController
   def create_square1_view
     @square1 ||= UIView.alloc.initWithFrame([[110, 98], [100, 100]]).tap do |sq1_view|
       sq1_view.userInteractionEnabled = false
-      sq1_view.accessibilityLabel = 'Square contains a box'
+      sq1_view.setAccessibilityLabel('Square')
       box1_view = new_box(0,0)
-      box1_view.accessibilityLabel = 'Is a box'
+      box1_view.setAccessibilityLabel('Box')
       sq1_view.addSubview(box1_view)
       self.view.addSubview(sq1_view)
     end
@@ -80,7 +84,7 @@ class InstantaneousPushViewController  < BaseViewController
     origin_image = UIImage.imageNamed('origin')
     origin_view = UIImageView.alloc.initWithFrame([[155, 235], [10, 10]])
     origin_view.image = origin_image
-    origin_view.accessibilityLabel = 'Is an origin'
+    origin_view.setAccessibilityLabel('Origin')
     self.view.addSubview(origin_view)
   end
 

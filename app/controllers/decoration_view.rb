@@ -182,6 +182,7 @@ class DecorationView < UIView
     arrow_view.clipsToBounds = true
     arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
     arrow_view.alpha = 0
+    arrow_view.setAccessibilityLabel('Arrow')
     self.addSubview(arrow_view)
   end
 
