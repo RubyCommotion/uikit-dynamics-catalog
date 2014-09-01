@@ -1,4 +1,5 @@
 class SpecHelper
+#TODO convert instance methods to class or singleton (anonymous) methods - then update spec file invocations of spec helpers as required
 
   def self.create_help_methods
     SpecHelper.alloc.init
@@ -6,9 +7,11 @@ class SpecHelper
 
   def calc_distance_and_angle(view)
     attachment_view_controller = AttachmentsView.alloc.init(DecorationView.alloc.init)
-    attachment_view_controller.view.trackAndDrawAttachmentFromView(attachment_view_controller.attachment_view,
-                                                                    toView: attachment_view_controller.square1,
+
+    attachment_view_controller.view.trackAndDrawAttachmentFromView(attachment_view_controller.instance_variable_get('@attachment_view'),
+                                                                    toView: attachment_view_controller.instance_variable_get('@square1'),
                                                                     withAttachmentOffset: CGPointMake(-25.0, -25.0))
+
     attachment_point_view_center =  attachment_view_controller.view.send(:create_attachment_points)
     calc_distance_and_angle = attachment_view_controller.view.send(:calc_distance_and_angle,
                                                                       attachment_point_view_center[:attachment_point_view_center],
@@ -22,6 +25,12 @@ class SpecHelper
       end
     end
     'All Methods responded'
+  end
+
+  def self.query_ivars(controller, ivars)
+    ivars.each do |ivar|
+      ivar[:ivar_instance].class.should.equal ivar[:ivar_class]
+    end
   end
 
   def test_image_view(image_name, img_vw_attr, origin_x, y_origin)
@@ -51,10 +60,18 @@ class SpecHelper
   end
 
 
+
   def view_controller_instances_exist(controllers)
     controller_test_results = true
     controllers.each do  |controller|
-        controller_instance = controller[:controller].alloc.init
+        # controller_instance = controller[:controller].alloc.init
+        if controller[:inject_decoration_view]
+          controller_instance = controller[:controller].alloc.init(DecorationView.alloc.init)
+            else
+              controller_instance = controller[:controller].alloc.init
+            end
+
+
         unless controller_instance == UIViewController || UITableViewController
           controller_test_results = false
         end

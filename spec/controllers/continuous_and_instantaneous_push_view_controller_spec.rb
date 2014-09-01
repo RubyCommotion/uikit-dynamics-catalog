@@ -13,15 +13,13 @@ view_controllers.each  do |view_controller|
 
     tests view_controller
 
-    def controller
-      @controller
-    end
+    describe "#{@controller_name}" do
 
-    describe "#{@controller_name}\'s init" do
-      it 'should create a square1 and push_behavior attr_accessors.' do
-        SpecHelper.create_help_methods.do_methods_respond(controller, :square1, :square1=, :push_behavior, :push_behavior=).should.equal 'All Methods responded'
+      it 'should create ivar @square1' do
+      SpecHelper.query_ivars(controller, [{:ivar_instance => controller.instance_variable_get('@square1'), :ivar_class => UIView}])
       end
     end
+
 
     describe "#{@controller_name} #loadView" do
       it 'should create a controller view of class type DecorationView' do
@@ -82,8 +80,8 @@ view_controllers.each  do |view_controller|
       end
 
       it 'should set the initial value of the push angle and distance to 0.0' do
-        controller.push_behavior.angle.should == 0.0
-        controller.push_behavior.magnitude.should == 0.0
+        controller.instance_variable_get('@push_behavior').angle.should == 0.0
+        controller.instance_variable_get('@push_behavior').magnitude.should == 0.0
       end
     end
 
@@ -91,8 +89,16 @@ view_controllers.each  do |view_controller|
 
       it 'should change the initial value of the acting push angle and distance after tapping box view' do
         tap('Box', at: :top_left, :times => 1, :touches => 1)
-        controller.push_behavior.angle.should.not == 0.0
-        controller.push_behavior.magnitude.should.not == 0.0
+        controller.instance_variable_get('@push_behavior').angle.should.not == 0.0
+        controller.instance_variable_get('@push_behavior').magnitude.should.not == 0.0
+      end
+
+      it 'should create ivars @push_behavior, @distance and @angle' do
+        tap('Box', at: :top_right, :times => 1, :touches => 1)
+      SpecHelper.query_ivars(controller, [ {:ivar_instance => controller.instance_variable_get('@push_behavior'), :ivar_class => UIPushBehavior},
+                                          {:ivar_instance => controller.instance_variable_get('@distance'), :ivar_class => Float},
+                                          {:ivar_instance => controller.instance_variable_get('@angle'), :ivar_class => Float}
+                                         ])
       end
     end
   end

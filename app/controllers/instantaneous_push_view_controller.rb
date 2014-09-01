@@ -24,7 +24,7 @@ class InstantaneousPushViewController  < UIViewController
   def viewDidAppear(animated)
     super
 
-    collisionBehavior = UICollisionBehavior.alloc.initWithItems([square1])
+    collisionBehavior = UICollisionBehavior.alloc.initWithItems([@square1])
     # Account for any top and bottom bars when setting up the reference bounds.
     collisionBehavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(UIEdgeInsetsMake(self.topLayoutGuide.length,
                                                                                           0,
@@ -33,10 +33,10 @@ class InstantaneousPushViewController  < UIViewController
     )
     animator.addBehavior(collisionBehavior)
 
-    self.push_behavior = UIPushBehavior.alloc.initWithItems([square1], mode:UIPushBehaviorModeInstantaneous)
-    push_behavior.angle = 0.0
-    push_behavior.magnitude = 0.0
-    animator.addBehavior(push_behavior)
+    @push_behavior = UIPushBehavior.alloc.initWithItems([@square1], mode:UIPushBehaviorModeInstantaneous)
+    @push_behavior.angle = 0.0
+    @push_behavior.magnitude = 0.0
+    animator.addBehavior(@push_behavior)
   end
 
 
@@ -47,18 +47,16 @@ class InstantaneousPushViewController  < UIViewController
     set_distance_and_angle(gesture)
 
     # Display an arrow showing the direction and magnitude of the applied impulse.
-    self.view.drawMagnitudeVectorWithLength(distance, angle: angle, color: UIColor.redColor, forLimitedTime: true)
+    self.view.drawMagnitudeVectorWithLength(@distance, angle: @angle, color: UIColor.redColor, forLimitedTime: true)
 
     # These two lines change the actual force vector.
-    push_behavior.setMagnitude(distance / 100.0)
-    push_behavior.setAngle(angle)
+    @push_behavior.setMagnitude(@distance / 100.0)
+    @push_behavior.setAngle(@angle)
     # A push behavior in instantaneous (impulse) mode automatically deactivate itself after applying the impulse. We thus need to reactivate
     # it when changing the impulse vector.
-    push_behavior.setActive(true)
+    @push_behavior.setActive(true)
   end
 
-  protected
-  attr_accessor :square1, :push_behavior, :distance, :angle
 
   private
 
@@ -73,7 +71,6 @@ class InstantaneousPushViewController  < UIViewController
       sq1_view.userInteractionEnabled = false
       sq1_view.setAccessibilityLabel('Square')
       box1_view = new_box(0,0)
-      box1_view.setAccessibilityLabel('Box')
       sq1_view.addSubview(box1_view)
       self.view.addSubview(sq1_view)
     end
@@ -103,8 +100,8 @@ class InstantaneousPushViewController  < UIViewController
   def set_distance_and_angle(gesture)
     p = gesture.locationInView(self.view)
     o = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
-    self.distance = Math.sqrt(((p.x - o.x) ** 2.0) + ((p.y - o.y) ** 2.0))
-    self.angle = Math.atan2(p.y-o.y, p.x-o.x)
-    self.distance = [distance, 100.0].min
+    @distance = Math.sqrt(((p.x - o.x) ** 2.0) + ((p.y - o.y) ** 2.0))
+    @angle = Math.atan2(p.y-o.y, p.x-o.x)
+    @distance = [@distance, 100.0].min
   end
 end

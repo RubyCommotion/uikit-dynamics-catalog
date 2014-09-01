@@ -1,10 +1,13 @@
 class DecorationView < UIView
 
+  # created to allow for unit testing of attachment_point_view and attached_view
+  attr_accessor :attachment_point_view, :attached_view
+
   def init
     super
     if self
       create_arrow_view
-      self.attachment_decoration_layers = create_attachment_decoration_layers
+      @attachment_decoration_layers = create_attachment_decoration_layers
     else
       return nil
     end
@@ -22,28 +25,28 @@ class DecorationView < UIView
 
   def dealloc
     if attachment_point_view && attached_view
-      self.attachment_point_view.removeObserver(self, forKeyPath: 'center')
-      self.attached_view.removeObserver(self, forKeyPath: 'center')
+      attachment_point_view.removeObserver(self, forKeyPath: 'center')
+      attached_view.removeObserver(self, forKeyPath: 'center')
     end
   end
 
 
   def drawMagnitudeVectorWithLength(length, angle:angle, color:arrowColor, forLimitedTime:temporary)
-    arrow_view.bounds = CGRectMake(0, 0, length, self.arrow_view.bounds.size.height)
-    arrow_view.transform = CGAffineTransformMakeRotation(angle)
-    arrow_view.tintColor = arrowColor
-    arrow_view.alpha = 1
+    @arrow_view.bounds = CGRectMake(0, 0, length, @arrow_view.bounds.size.height)
+    @arrow_view.transform = CGAffineTransformMakeRotation(angle)
+    @arrow_view.tintColor = arrowColor
+    @arrow_view.alpha = 1
     if (temporary)
-      UIView.animateWithDuration(1.0, animations: ->{ arrow_view.alpha = 0 })
+      UIView.animateWithDuration(1.0, animations: ->{ @arrow_view.alpha = 0 })
     end
-    arrow_view
+    @arrow_view
   end
 
 
   def trackAndDrawAttachmentFromView(attachment_point_view, toView: attached_view, withAttachmentOffset: attachment_offset)
     self.attachment_point_view = attachment_point_view
     self.attached_view = attached_view
-    self.attachment_offset = attachment_offset
+    @attachment_offset = attachment_offset
 
     # Tracking changes to the properties (see layoutSubviews) of any id<UIDynamicItem> involved in  a simulation incurs a performance cost.
     # Observe the 'center' property of both views to know when they move.
@@ -56,12 +59,7 @@ class DecorationView < UIView
   def layoutSubviews
     super
 
-    arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
-
-    # ** Unused Code in Objective-C original source code **
-    # if center_point_view
-    #   center_point_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
-    # end
+    @arrow_view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
 
     # access limited to trackAndDrawAttachmentFromView instance method
     if attachment_point_view && attached_view
@@ -89,15 +87,13 @@ class DecorationView < UIView
 
   def observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
 
-    if (object == self.attachment_point_view || object == self.attached_view)
+    if (object == attachment_point_view || object == attached_view)
       self.setNeedsLayout
     else
       super
     end
   end
 
-  protected
-  attr_accessor :arrow_view, :attachment_point_view, :attached_view, :attachment_offset, :attachment_decoration_layers, :center_point_view
 
   private
 
@@ -120,17 +116,17 @@ class DecorationView < UIView
     attachment_points = Hash.new
     attachment_points[:attachment_point_view_center] = CGPointMake(attachment_point_view.bounds.size.width/2, attachment_point_view.bounds.size.height/2)
     attachment_points[:attachment_point_view_center] = attachment_point_view.convertPoint(attachment_points[:attachment_point_view_center], toView: self)
-    attachment_points[:attached_view_attachment_point] = CGPointMake(attached_view.bounds.size.width/2 + attachment_offset.x, attached_view.bounds.size.height/2 + attachment_offset.y)
+    attachment_points[:attached_view_attachment_point] = CGPointMake(attached_view.bounds.size.width/2 + @attachment_offset.x, attached_view.bounds.size.height/2 + @attachment_offset.y)
     attachment_points[:attached_view_attachment_point] =  attached_view.convertPoint(attachment_points[:attached_view_attachment_point], toView: self)
     attachment_points
   end
 
 
   def number_of_required_dashes(distance)
-    dashes = {required_dashes: 0, d: 0.0, max_dashes:attachment_decoration_layers.count, dash_layer: nil }
+    dashes = {required_dashes: 0, d: 0.0, max_dashes:@attachment_decoration_layers.count, dash_layer: nil }
 
     while dashes[:required_dashes] < dashes[:max_dashes]
-      dashes[:dash_layer] = attachment_decoration_layers[dashes[:required_dashes]]
+      dashes[:dash_layer] = @attachment_decoration_layers[dashes[:required_dashes]]
       if (dashes[:d] + dashes[:dash_layer].bounds.size.height) < distance
         dashes[:d] += dashes[:dash_layer].bounds.size.height
         dashes[:dash_layer].hidden = false
@@ -144,7 +140,7 @@ class DecorationView < UIView
 
   def hide_dashes(required_dashes, max_dashes)
     while required_dashes < max_dashes
-      attachment_decoration_layers[required_dashes].setHidden(true)
+      @attachment_decoration_layers[required_dashes].setHidden(true)
       required_dashes = required_dashes + 1
     end
     required_dashes
@@ -163,7 +159,7 @@ class DecorationView < UIView
   def do_transform(required_dashes, dash_layer, dash_spacing, transform_object)
     drawn_dashes = 0
     while drawn_dashes < required_dashes
-      dash_layer = attachment_decoration_layers[drawn_dashes]
+      dash_layer = @attachment_decoration_layers[drawn_dashes]
       transform_object = CGAffineTransformTranslate(transform_object, 0, dash_spacing)
       dash_layer.setAffineTransform(transform_object)
       transform_object = CGAffineTransformTranslate(transform_object, 0, dash_layer.bounds.size.height)
@@ -176,14 +172,14 @@ class DecorationView < UIView
   def create_arrow_view
     # First time initialization.
     arrow_image = UIImage.imageNamed('arrow').imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
-    self.arrow_view = UIImageView.alloc.initWithImage(arrow_image)
-    arrow_view.bounds = CGRectMake(0, 0, arrow_image.size.width, arrow_image.size.height)
-    arrow_view.contentMode = UIViewContentModeRight
-    arrow_view.clipsToBounds = true
-    arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
-    arrow_view.alpha = 0
-    arrow_view.setAccessibilityLabel('Arrow')
-    self.addSubview(arrow_view)
+    @arrow_view = UIImageView.alloc.initWithImage(arrow_image)
+    @arrow_view.bounds = CGRectMake(0, 0, arrow_image.size.width, arrow_image.size.height)
+    @arrow_view.contentMode = UIViewContentModeRight
+    @arrow_view.clipsToBounds = true
+    @arrow_view.layer.anchorPoint = CGPointMake(0.0, 0.5)
+    @arrow_view.alpha = 0
+    @arrow_view.setAccessibilityLabel('Arrow')
+    self.addSubview(@arrow_view)
   end
 
 

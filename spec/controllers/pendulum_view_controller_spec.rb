@@ -10,13 +10,26 @@ describe PendulumViewController do
   end
 
   describe 'PendulumViewController #init' do
-    it 'should create attr_accessors :attachmentPoint, :pendulumBehavior' do
-      @help_methods.do_methods_respond(controller, :attachment_point, :attachment_point=, :pendulum_behavior, :pendulum_behavior=).
-                                   should.equal 'All Methods responded'
+
+    it 'should create the ivars @decorator_view' do
+      SpecHelper.query_ivars(controller, [{:ivar_instance => controller.instance_variable_get('@decorator_view'), :ivar_class => DecorationView}])
     end
   end
 
+  describe '#loadView' do
+    it 'should create a root view using instance of class DecorationView' do
+      controller.view.class.should.equal DecorationView
+    end
+  end
+
+
   describe 'PendulumViewController #viewDidLoad' do
+
+    it 'should create the ivars @attachmentPoint and @pb' do
+      SpecHelper.query_ivars(controller, [{:ivar_instance => controller.instance_variable_get('@attachment_point'), :ivar_class => NSKVONotifying_UIImageView},
+                                          {:ivar_instance => controller.instance_variable_get('@pb'), :ivar_class => PendulumBehaviour}])
+    end
+
     it 'should assign a UILabel as a controller Subview. ' do
       controller.view.subviews[1].object_id.should.equal controller.instance_variable_get('@label').object_id
     end
@@ -27,7 +40,7 @@ describe PendulumViewController do
 
     it 'should assign attachment_point imageImageView as a controller Subview.' do
       controller.view.subviews[3].class.should.equal NSKVONotifying_UIImageView
-      controller.view.subviews[3].object_id.should.equal controller.attachment_point.object_id
+      controller.view.subviews[3].object_id.should.equal controller.instance_variable_get('@attachment_point').object_id
     end
 
     # self.view.trackAndDrawAttachmentFromView tested via decoration_view_spec.rb
@@ -46,9 +59,8 @@ describe PendulumViewController do
       controller.view.gestureRecognizers[0].state.should == UIGestureRecognizerStatePossible
     end
 
-
     it "should have a UIPanGestureRecognizer that responds to a drag action by changing
-the gesture recognizer\'s locationInView CGPoint value and change the gesture\'s
+the gesture recognizer\'s locationInView CGPoint value and changing the gesture\'s
 state from UIGestureRecognizerStatePossible to UIGestureRecognizerStateEnded." do
       # starting state of gesture recognizer
       controller.view.gestureRecognizers[0].state.should == UIGestureRecognizerStatePossible
@@ -60,35 +72,36 @@ state from UIGestureRecognizerStatePossible to UIGestureRecognizerStateEnded." d
       location = controller.view.gestureRecognizers[0].locationInView(controller.view)
       (location.x == 140.0 && location.y == 340.0).should.equal true
       controller.send(:drag_weight, controller.view.gestureRecognizers[0])
-      # ending state of gesture recognizer - interestingly if spec file run in isolation it tests as UIGestureRecognizerStateEnded
+      # ending state of gesture recognizer - if spec file run in isolation it tests as UIGestureRecognizerStateEnded
       # vs full run of all specs it tests as UIGestureRecognizerStatePossible
-      controller.view.gestureRecognizers[0].state.should == UIGestureRecognizerStatePossible
-    end
 
+      state = ((controller.view.gestureRecognizers[0].state == 0) | (controller.view.gestureRecognizers[0].state == 3))
+      state.should == true
+    end
   end
 
   describe 'Class PendulumBehaviour\'s instance object pendulum_behavior' do
 
     it 'should have two attr_accessors :draggingBehavior and :pushBehavior' do
-      @help_methods.do_methods_respond(controller.pendulum_behavior, :draggingBehavior, :draggingBehavior=, :pushBehavior, :pushBehavior=).
+      @help_methods.do_methods_respond(controller.instance_variable_get('@pb'), :draggingBehavior, :draggingBehavior=, :pushBehavior, :pushBehavior=).
                                    should.equal 'All Methods responded'
     end
 
     it 'should respond to #begin_dragging_weight_at_point' do
-      controller.pendulum_behavior.begin_dragging_weight_at_point(controller.attachment_point.center).childBehaviors[3].class.should.equal UIAttachmentBehavior
-      controller.pendulum_behavior.draggingBehavior.anchorPoint.class.should.equal  CGPoint
+      controller.instance_variable_get('@pb').begin_dragging_weight_at_point(controller.instance_variable_get('@attachment_point').center).childBehaviors[3].class.should.equal UIAttachmentBehavior
+      controller.instance_variable_get('@pb').draggingBehavior.anchorPoint.class.should.equal  CGPoint
     end
 
     it 'should respond to #drag_weight_to_point' do
-      controller.pendulum_behavior.drag_weight_to_point(controller.attachment_point.center).class.should.equal CGPoint
+      controller.instance_variable_get('@pb').drag_weight_to_point(controller.instance_variable_get('@attachment_point').center).class.should.equal CGPoint
     end
 
     it 'should respond to #end_dragging_weight_with_velocity' do
       velocity = CGPointMake(-7.0, 11.0)
-      controller.pendulum_behavior.end_dragging_weight_with_velocity(velocity)
-      # predicated on     magnitude /= 500 in class PendulumBehaviour
-      controller.pendulum_behavior.pushBehavior.magnitude.should.be.close(0.026, 0.001)
-      controller.pendulum_behavior.pushBehavior.angle.should.be.close( 2.137, 0.001)
+      controller.instance_variable_get('@pb').end_dragging_weight_with_velocity(velocity)
+      # predicated on  magnitude /= 500 in class PendulumBehaviour
+      controller.instance_variable_get('@pb').pushBehavior.magnitude.should.be.close(0.026, 0.001)
+      controller.instance_variable_get('@pb').pushBehavior.angle.should.be.close( 2.137, 0.001)
     end
   end
 end

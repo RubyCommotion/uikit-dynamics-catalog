@@ -1,5 +1,5 @@
 class CustomDynamicItemViewController < UIViewController
-  include BaseModule
+  include BaseModule, ResizableDynamicItemModule
 
   def init(decorator_view)
     @decorator_view = decorator_view
@@ -21,15 +21,12 @@ class CustomDynamicItemViewController < UIViewController
     super
     button = create_button
     self.view.addSubview(button)
-    self.button_bounds = button.bounds
+    @button_bounds = button.bounds
     # Force the button image to scale with its bounds.
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill
     button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill
   end
 
-
-  protected
-  attr_accessor :button_bounds
 
   private
 
@@ -45,7 +42,7 @@ class CustomDynamicItemViewController < UIViewController
   end
 
   def create_bb_dynamic_item(sender)
-    sender.bounds = button_bounds
+    sender.bounds = @button_bounds
     # UIDynamicAnimator instances are relatively cheap to create.
     # PositionToBoundsMapping maps the center of an id<ResizableDynamicItem>
     # (UIDynamicItem with mutable bounds) to its bounds.  As dynamics modifies

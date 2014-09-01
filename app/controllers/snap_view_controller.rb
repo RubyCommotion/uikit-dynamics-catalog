@@ -8,18 +8,16 @@ class SnapViewController < UIViewController
     self.view.addSubview(box)
     gesture = UITapGestureRecognizer.alloc.initWithTarget(self, action: "handle_tap:")
     self.view.addGestureRecognizer(gesture)
+    @snap_behavior = nil
   end
-
-  protected
-  attr_accessor :snap_behavior
 
   private
 
   def handle_tap(gesture)
     point = gesture.locationInView(view)
-    animator.removeBehavior(self.snap_behavior)
-    self.snap_behavior = UISnapBehavior.alloc.initWithItem(box, snapToPoint: point)
-    animator.addBehavior(self.snap_behavior)
+    animator.removeBehavior(@snap_behavior)
+    @snap_behavior = UISnapBehavior.alloc.initWithItem(box, snapToPoint: point)
+    animator.addBehavior(@snap_behavior)
   end
 
   def create_instructions_label
