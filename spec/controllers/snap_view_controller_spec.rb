@@ -1,17 +1,6 @@
 describe SnapViewController do
 
-  before do
-     @help_methods = SpecHelper.create_help_methods
-   end
-
    tests SnapViewController
-
-  describe 'SnapViewController #init' do
-    it 'should create attr_accessor :snap_behavior' do
-      @help_methods.do_methods_respond(controller, :snap_behavior, :snap_behavior=).
-                                   should.equal 'All Methods responded'
-    end
-  end
 
   describe 'SnapViewController #viewDidLoad' do
     it 'should assign a UILabel as the first controller subview.' do
@@ -36,4 +25,11 @@ describe SnapViewController do
       box_center_after_tap.y.should.be > box_center_before_tap.y
     end
   end
+
+   # Ivar check needs to floow previous tap test to be a meaningful test of @snap_behavior
+   describe 'SnapViewController #init' do
+     it 'should create the ivars @snap_behavior' do
+       SpecHelper.query_ivars(controller, [{:ivar_instance => controller.instance_variable_get('@snap_behavior'), :ivar_class => UISnapBehavior}])
+     end
+   end
 end

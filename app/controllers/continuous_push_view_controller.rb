@@ -22,41 +22,38 @@ class ContinuousPushViewController < UIViewController
 
   def viewDidAppear(animated)
   	super
-    collision_behavior = UICollisionBehavior.alloc.initWithItems([square1])
+    collision_behavior = UICollisionBehavior.alloc.initWithItems([@square1])
     # Account for any top and bottom bars when setting up the reference bounds.
     collision_behavior.setTranslatesReferenceBoundsIntoBoundaryWithInsets(
       UIEdgeInsetsMake(self.topLayoutGuide.length, 0, self.bottomLayoutGuide.length, 0)
     )
     animator.addBehavior(collision_behavior)
 
-    self.push_behavior = UIPushBehavior.alloc.initWithItems([self.square1], mode:UIPushBehaviorModeContinuous)
-    push_behavior.angle = 0.0
-    push_behavior.magnitude = 0.0
-    animator.addBehavior(push_behavior)
+    @push_behavior = UIPushBehavior.alloc.initWithItems([@square1], mode:UIPushBehaviorModeContinuous)
+    @push_behavior.angle = 0.0
+    @push_behavior.magnitude = 0.0
+    animator.addBehavior(@push_behavior)
   end
 
   
   
   def handle_push_continuous_gesture(gesture)
-    # Tapping in the view changes the angle and magnitude of the force. To
+    # Tapping in the view changes the @angle and magnitude of the force. To
     # visually show the force vector on screen, a red arrow is drawn
-    # representing the angle and magnitude of this vector. The force is
+    # representing the @angle and magnitude of this vector. The force is
     # continuously applied while the behavior is active, so we keep the vector
     # line visible and just update its size and rotation to represent the
     # vector.
     set_distance_and_angle(gesture)
 
     # Display an arrow showing the direction and magnitude of the applied force.
-    self.view.drawMagnitudeVectorWithLength(distance, angle: angle, color: UIColor.redColor, forLimitedTime: false)
+    self.view.drawMagnitudeVectorWithLength(@distance, angle: @angle, color: UIColor.redColor, forLimitedTime: false)
 
     # These two lines change the actual force vector.
-    push_behavior.setMagnitude(distance / 100.0)
-    push_behavior.setAngle(angle)
+    @push_behavior.setMagnitude(@distance / 100.0)
+    @push_behavior.setAngle(@angle)
   end
 
-  protected
-
-  attr_accessor :square1, :push_behavior, :distance, :angle
 
   private
 
@@ -70,7 +67,6 @@ class ContinuousPushViewController < UIViewController
     @square1 ||= UIView.alloc.initWithFrame([[110, 98], [100, 100]]).tap do |sq1_view|
       sq1_view.userInteractionEnabled = false
       box1_view = new_box(0,0)
-      box1_view.setAccessibilityLabel('Box')
       sq1_view.addSubview(box1_view)
       sq1_view.setAccessibilityLabel('Square')
       self.view.addSubview(sq1_view)
@@ -102,8 +98,8 @@ class ContinuousPushViewController < UIViewController
   def set_distance_and_angle(gesture)
     p = gesture.locationInView(self.view)
     o = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
-    self.distance = Math.sqrt(((p.x-o.x) ** 2.0) + ((p.y-o.y) ** 2.0))
-    self.angle = Math.atan2(p.y-o.y, p.x-o.x)
-    self.distance = [distance, 200.0].min
+    @distance = Math.sqrt(((p.x-o.x) ** 2.0) + ((p.y-o.y) ** 2.0))
+    @angle = Math.atan2(p.y-o.y, p.x-o.x)
+    @distance = [@distance, 200.0].min
   end
 end

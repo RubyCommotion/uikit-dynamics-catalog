@@ -7,7 +7,7 @@ class GravitySpringController < UIViewController
   end
 
   def loadView
-    self.view = DecorationView.alloc.init
+    self.view = @decorator_view
   end
 
   def viewDidLoad
@@ -46,13 +46,15 @@ class GravitySpringController < UIViewController
   def create_square
     square ||= UIView.alloc.initWithFrame([[110, 135], [100, 100]]).tap do |sq|
       sq.userInteractionEnabled = false
-      sq.addSubview new_box(0,0)
+      sq.addSubview(new_box(0,0))
+      sq.setAccessibilityLabel('Square')
       attachment_point_mask_image = UIImage.imageNamed("attachment_point_mask")
       square_attachment_view = UIImageView.alloc.initWithFrame([[44, 44], [attachment_point_mask_image.size.height, attachment_point_mask_image.size.width]])
       square_attachment_view.image = attachment_point_mask_image
       square_attachment_view.center = CGPointMake(25.0, 25.0)
       square_attachment_view.tintColor = UIColor.blueColor
       square_attachment_view.image = square_attachment_view.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+      square_attachment_view.setAccessibilityLabel('Square Attachment View')
 
       sq.addSubview(square_attachment_view)
     end
@@ -66,6 +68,7 @@ class GravitySpringController < UIViewController
       att_vw.image = attachment_point_mask_image
       att_vw.tintColor = UIColor.redColor
       att_vw.image = att_vw.image.imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
+      att_vw.setAccessibilityLabel('Attachment View')
     end
   end
 
@@ -74,14 +77,15 @@ class GravitySpringController < UIViewController
   end
 
   def create_instructions_label
-    @label ||= UILabel.alloc.initWithFrame([[20, 439], [280, 21]]).tap do |lbl|
+    label ||= UILabel.alloc.initWithFrame([[20, 439], [280, 21]]).tap do |lbl|
       lbl.enabled = false
       lbl.contentMode = UIViewContentModeLeft
       lbl.clipsToBounds = true
       lbl.text = 'Drag red circle to move box and spring.'
       lbl.adjustsFontSizeToFitWidth = true
       lbl.font = UIFont.fontWithName('Chalkduster', size:15)
+      lbl.setAccessibilityLabel('Drag circle')
     end
-    self.view.addSubview(@label)
+    self.view.addSubview(label)
   end
 end

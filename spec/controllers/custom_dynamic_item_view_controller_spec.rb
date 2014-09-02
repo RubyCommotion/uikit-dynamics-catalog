@@ -12,19 +12,24 @@ describe CustomDynamicItemViewController do
   end
 
 
-  it 'should create an attr_accessor button_bounds' do
-    @help_methods.do_methods_respond(controller, :button_bounds, :button_bounds=).should.equal 'All Methods responded'
+  it 'should create two ivars @button_bounds and @target' do
+    button = controller.send(:create_button)
+    ptbm = ResizableDynamicItemModule::PositionToBoundsMapping.alloc.initWithTarget(button)
+
+    SpecHelper.query_ivars(controller, [{:ivar_instance => controller.instance_variable_get('@button_bounds'), :ivar_class => CGRect},
+                                       {:ivar_instance => ptbm.instance_variable_get('@target'), :ivar_class => UIButton}
+                                     ])
   end
+
 
   describe 'CustomDynamicItemViewController #loadView' do
 
-    it 'should create a DecorationView controller view' do
+    it 'should create a root view using instance of injected class DecorationView' do
       controller.view.class.should.equal DecorationView
     end
   end
 
   describe 'CustomDynamicItemViewController #viewDidLoad' do
-
     it 'should create a button' do
      view('Tap Me').class.should.equal UIButton
     end
@@ -39,15 +44,14 @@ describe CustomDynamicItemViewController do
     end
 
     it 'should assign the button\'s bounds to the attr_accessor button_bounds.'do
-      controller.button_bounds.origin.x.should.equal 0.0
-      controller.button_bounds.origin.y.should.equal 0.0
-      controller.button_bounds.size.width.should.equal 150.0
-      controller.button_bounds.size.height.should.equal 46.0
+      controller.instance_variable_get('@button_bounds').origin.x.should.equal 0.0
+      controller.instance_variable_get('@button_bounds').origin.y.should.equal 0.0
+      controller.instance_variable_get('@button_bounds').size.width.should.equal 150.0
+      controller.instance_variable_get('@button_bounds').size.height.should.equal 46.0
     end
   end
 
   describe 'CustomDynamicItemViewController #button_action' do
-
 
     it 'should create a UIAttachmentBehavior and add it to a UIDynamicAnimator.'do
       controller.send(:create_attachment_behaviour, @button)
@@ -84,15 +88,15 @@ describe CustomDynamicItemViewController do
     #TODO can this be refactored?
     it 'should have been used to create an instance of itself by CustomDynamicItemViewController.'do
       pos_to_bounds_mapping = controller.send(:create_bb_dynamic_item, @button)
-      pos_to_bounds_mapping.class.should.equal BaseModule::PositionToBoundsMapping
+      pos_to_bounds_mapping.class.should.equal ResizableDynamicItemModule::PositionToBoundsMapping
       @button.center.x.should !=  pos_to_bounds_mapping.center.x
       @button.center.y.should !=  pos_to_bounds_mapping.center.y
     end
 
     it 'should have an attr_accessor :target and the protocol methods bounds, setBounds, center, setCenter, transform, setTransform ' do
       @button_bounds_dynamic_item = controller.send(:button_action, @button)
-      @help_methods.do_methods_respond(@button_bounds_dynamic_item, :target, :target=, :bounds,
-                                       :setBounds, :center, :setCenter, :transform, :setTransform ).should.equal 'All Methods responded'
+      @help_methods.do_methods_respond(@button_bounds_dynamic_item, :bounds, :setBounds, :center, :setCenter,
+                                       :transform, :setTransform ).should.equal 'All Methods responded'
     end
 
     it 'should return the button bounds via #bounds' do
